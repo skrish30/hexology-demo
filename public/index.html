@@ -12,6 +12,7 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 
     <style>
@@ -20,14 +21,18 @@
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
         #messages li:nth-child(odd) { background: #eee; }
-        #main { position: absolute; padding-bottom: 0px; margin-top: 0px; left: 13%; top: 185%;}
+        #chatbot { position: absolute; padding-bottom: 0px; margin-top: 0px; left: 60%; top: 102.5%; width: 550px; height: 500px; border-style: solid; border-color:cadetblue; border-radius: 10px; background-image: url('./images/chatbackground.jpg');}
         #title {color: white}       
         #header { background: url(./images/headbackground.jpg); }
+        #content {height: 450px; overflow: auto;}
+        #chatbotheader {font-size: 25px; color:crimson;}
+        #top {color:crimson; font-size: 5em; font-weight: 400; font-family: 'Passion One', cursive; margin: 0;}
         
         #middle {height: 450px; width: 1200px;}
         #videoleft {width: 600px; float: left;}
         #boxright {height: 500px; width: 500px; float: right;}
-        #conceptright {position: absolute; height: 500px; width: 500px; left: 54%; top: 147.5%;}
+        #conceptleft {position: absolute; height: 450px; width: 600px; left: 14.5%; top: 120%;}
+        #queryright {position: absolute; height: 400px; width: 500px; left: 55%; top: 120%;}
 
         #people {position: absolute; top: 30%; left: 37.5%; font-size: 20px; color: rgb(14, 2, 66);}
         #people-title {position: absolute; bottom: 275%; left: 30%;}
@@ -41,7 +46,7 @@
         #other {position: absolute; top: 30%; left: 40%; font-size: 20px; color: rgb(14, 2, 66);}
         #other-title {position: absolute; bottom: 275%; left: 30%;}
         #other li:nth-last-child(1) { color:crimson; }
-        #hidebutton {position: absolute; left: 10%;}
+        #video_controls_var {position: absolute; bottom: -5%; left: -25%;}
 
         #concept1 {text-align:center; color:darkorange; font-size: 15px;}
         #abstract1 {text-align:center; color:darkblue; font-size: 8px;}
@@ -51,24 +56,24 @@
         #abstract3 {text-align:center; color:darkblue; font-size: 8px;}
         #concept4 {text-align:center; bottom: 500%; left: 30%; color:darkorange; font-size: 15px;}
         #abstract4 {text-align:center;; color:darkblue; font-size: 8px;}
-        /* #concept4 {position: absolute; bottom: 500%; left: 30%; color:darkorange; font-size: 30px;}
-        #abstract4 {position: absolute; bottom: 425%; left: 10%; color:darkblue; font-size: 20px;} */
     </style>
 </head>
     
 <body>
+
     
     <section id="banner" data-video="images/banner">
         <div class="inner">
             <header>
+                <h11 id="top">#hexology</h11>
                 <h1>Unlock The Magic</h1>
-                <p>For anyone that wants to share their digital media in a real location, </br><a href="https://hexology.co/">Hexology</a> is the social media app that puts your content into the #physicalworld.</p>
+                 <p>For anyone that wants to share their digital media in a real location, </br><a href="https://hexology.co/">Hexology</a> is the social media app that puts your content into the #physicalworld.</p> 
             </header>
             <a href="#main" class="more">Learn More</a>
         </div>
     </section>
     
-    <div class="container-fluid pb-2" id="header">
+    <!-- <div class="container-fluid pb-2" id="header">
         <h1 class="text-center mb-3" id="title">#hexology</h1>
         <form action="/api/members" method="POST" class="mb-4">
             <div class="form-group">
@@ -77,7 +82,7 @@
             </div>
                 <input type="submit" value="Submit" class="btn btn-primary btn-block">
         </form> 
-    </div>
+    </div> -->
   
     <div class="container mt-2 mb-2" id="middle">
         
@@ -88,7 +93,7 @@
         </div>
 
         <div class="container" id="boxright">            
-            <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="false">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
@@ -105,7 +110,7 @@
                             </button>
                         </div>
                         <div class="people">
-                            <ul id="people"></ul>
+                            <ul id="people"></ul>                         
                         </div>                  
                     </div>
                     <div class="carousel-item">
@@ -156,9 +161,9 @@
             </div>            
         </div>
     </div>
-    <br>
-    <div class="bd-example" id="conceptright">
-        <div id="carouselExampleCaptions2" class="carousel slide" data-ride="carousel">
+    
+    <div class="bd-example" id="conceptleft">
+        <div id="carouselExampleCaptions2" class="carousel slide" data-ride="carousel" data-interval="false">
           <ol class="carousel-indicators">
             <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
@@ -206,21 +211,32 @@
         </div>
       </div>
 
+      <div class="container text-center" id="queryright">
+          <img src="./images/querybackground.jpg" class="d-block w-100">
+          <h9 id="entity"></h9>
+          <p id="originaltext"></p>
+      </div>
+
     <div class="container text-center" id="video_controls_var">
-        <button id="playpausebtn" style="background-color:transparent; width: 55px; height: 45px;" class="hide" onclick="playPause(this,'my_video')"></button>
+        <button id="playpausebtn" style="background-color:transparent; width: 55px; height: 55px;" class="hide" onclick="playPause(this,'my_video')"></button>
     </div>
     
-    <div class="container mt-4 mb-2 text-center" id="main">
-        <div class="container" style="min-height: 10rem">
+    <div class="container mt-4 mb-2 text-center" id="chatbot" style="z-index: 15;"> 
+        <h10 id="chatbotheader">Hexology Chatbot</h10>
+        <div class="container" style="min-height: 10rem" id="content">
         <ul id="messages"></ul>
         </div>
         <div class="container">
-        <button id="hidebutton" onclick="hideshow(this)" style="width: 5%; background: rgb(130, 224, 255); border: none; padding: 10px;">Hide</button>
-        <form action="" id="send_message" style="background: #000; padding: 3px; position: fixed; bottom: 0; width: 70%;">
-                <input id="m" autocomplete="off" style="border: 0; padding: 10px; width: 90%; margin-right: .5%;"/><button style="width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px;">Send</button>
+        <form action="" id="send_message" style="background: #000; padding: 3px; position: fixed; right: 3.8%; bottom: 0; width: 550px;">
+            <input id="m" autocomplete="off" style="border: 0; padding: 10px; width: 90%; margin-right: .5%;"/><button style="width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px;">Send</button>
         </form>
         </div>
     </div>
+
+      <div class="container" id="chat_controls" style="position :fixed; bottom: 0; right: -30%;">
+        <button id="showbutton" onclick="show(this, 'chatbot', 'hidebutton')" style="width: 5%; background: rgb(130, 224, 255); border: none; padding: 10px; display: none;">Show</button>
+        <button id="hidebutton" onclick="hide(this, 'chatbot', 'showbutton')" style="width: 5%; background: rgb(130, 224, 255); border: none; padding: 10px;">Hide</button>
+      </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -244,16 +260,6 @@
         //btn.innerHTML = "Play";
         }
     }
-    function hideshow(btn) {
-        var x = document.getElementById("send_message");
-        if (x.style.display === "none") {
-        x.style.display = "block";
-        btn.innerHTML = "Hide";
-        } else {
-        x.style.display = "none";
-        btn.innerHTML = "Show";
-        }
-    }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script
@@ -262,9 +268,6 @@
     crossorigin="anonymous">
 </script>
 <script>
-    //Counts the concepts that is coming in
-    let conceptCount = 1;
-  
     $(function () {
         var socket = io();
         $('#send_message').submit(function(){
@@ -286,10 +289,13 @@
 
         //box 1
         socket.on('Person', function(msg){
-        $('#people').append($('<li>').text(msg));
+        $("#people").append($('<li>').text(msg));
         var count1 = $("#people").children().length;
         //count1 = "Total People Msg: " + count1;
         document.getElementById('output1').innerHTML = count1;
+        $("#people li").click(function(){
+        socket.emit('query', $(this));
+        });
         });
 
         //box 2
@@ -298,6 +304,9 @@
         var count2 = $("#location").children().length;
         //count2 = "Total Location Msg: " + count2;
         document.getElementById('output2').innerHTML = count2;
+        $("#location li").click(function(){
+        socket.emit('query', $(this));
+        });
         });
 
         //box 3
@@ -306,6 +315,9 @@
         var count3 = $("#quantity").children().length;
         //count3 = "Total Quantity Msg: " + count3;
         document.getElementById('output3').innerHTML = count3;
+        $("#quantity li").click(function(){
+        socket.emit('query', $(this));
+        });
         });
 
         //box 4
@@ -314,9 +326,12 @@
         var count4 = $("#other").children().length;
         //count4 = "Total Other Msg: " + count4;
         document.getElementById('output4').innerHTML = count4;
+        $("#other li").click(function(){
+        socket.emit('query', $(this));
+        });
         });
 
-        //concept1
+        //concept
         socket.on('concept', function(msg){
         let conceptNumber = '#concept' + conceptCount; 
         let abstractNumber = '#abstract' + conceptCount;
@@ -324,6 +339,19 @@
         $(abstractNumber).text(msg.abstract);
         conceptCount += 1;
         });
-
     });
+        function show(x,y,z){
+        var y = document.getElementById(y);
+        var z = document.getElementById(z);
+        y.style.display = "block";
+        z.style.display = "block";
+        x.style.display = "none";
+        };
+        function hide(x,y,z){
+        var y = document.getElementById(y);
+        var z = document.getElementById(z);
+        y.style.display = "none";
+        z.style.display = "block";
+        x.style.display = "none";
+        };
 </script>
