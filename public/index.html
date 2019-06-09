@@ -295,6 +295,7 @@
         document.getElementById('output1').innerHTML = count1;
         $("#people li").click(function(){
         socket.emit('query', $(this));
+        $(entity).text(this);
         });
         });
 
@@ -306,6 +307,7 @@
         document.getElementById('output2').innerHTML = count2;
         $("#location li").click(function(){
         socket.emit('query', $(this));
+        $(entity).text(this);
         });
         });
 
@@ -317,6 +319,7 @@
         document.getElementById('output3').innerHTML = count3;
         $("#quantity li").click(function(){
         socket.emit('query', $(this));
+        $(entity).text(this);
         });
         });
 
@@ -328,6 +331,7 @@
         document.getElementById('output4').innerHTML = count4;
         $("#other li").click(function(){
         socket.emit('query', $(this));
+        $(entity).text(this);
         });
         });
 
@@ -339,7 +343,12 @@
         $(abstractNumber).text(msg.abstract);
         conceptCount += 1;
         });
+
+        socket.on('passage', function(msg){
+          $(originaltext).text(msg);
+        });
     });
+    
         function show(x,y,z){
         var y = document.getElementById(y);
         var z = document.getElementById(z);
