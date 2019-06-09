@@ -310,7 +310,7 @@
         //count2 = "Total Location Msg: " + count2;
         document.getElementById('output2').innerHTML = count2;
         $("#location li").click(function(){
-        socket.emit('query', $(this));
+        socket.emit('query', $(this).html());
         $(entity).text($(this).html());
         });
         });
@@ -321,7 +321,7 @@
         //count3 = "Total Quantity Msg: " + count3;
         document.getElementById('output3').innerHTML = count3;
         $("#quantity li").click(function(){
-        socket.emit('query', $(this));
+        socket.emit('query', $(this).html());
         $(entity).text($(this).html());
         });
         });
@@ -332,7 +332,7 @@
         //count4 = "Total Other Msg: " + count4;
         document.getElementById('output4').innerHTML = count4;
         $("#other li").click(function(){
-        socket.emit('query', $(this));
+        socket.emit('query', $(this).html());
         $(entity).text($(this).html());
         });
         });
