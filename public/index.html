@@ -33,7 +33,6 @@
         #boxright {height: 500px; width: 500px; float: right;}
         #conceptleft {position: absolute; height: 450px; width: 600px; left: 14.5%; top: 120%;}
         #queryright {position: absolute; height: 400px; width: 500px; left: 55%; top: 120%;}
-
         #people {position: absolute; top: 30%; left: 37.5%; font-size: 20px; color: rgb(14, 2, 66);}
         #people-title {position: absolute; bottom: 275%; left: 30%;}
         #people li:nth-last-child(1) { color:crimson; }
@@ -47,7 +46,6 @@
         #other-title {position: absolute; bottom: 275%; left: 30%;}
         #other li:nth-last-child(1) { color:crimson; }
         #video_controls_var {position: absolute; bottom: -5%; left: -25%;}
-
         #concept1 {text-align:center; color:darkorange; font-size: 15px;}
         #abstract1 {text-align:center; color:darkblue; font-size: 8px;}
         #concept2 {text-align:center; color:rgb(230, 191, 144); font-size: 15px;}
@@ -268,8 +266,14 @@
     crossorigin="anonymous">
 </script>
 <script>
+    //Counts the concept that is coming in
+    let conceptCount = 1; 
+
     $(function () {
         var socket = io();
+        setTimeout(()=>{
+        socket.emit('chat message', 'a user has connected')
+      },2000)
         $('#send_message').submit(function(){
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
@@ -278,7 +282,6 @@
         socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
         });
-
         $('#playpausebtn').click(function(){
         socket.emit('timer','timer started')
         return false;
@@ -286,7 +289,6 @@
         // socket.on('timer', function(msg){
         // $(('timer started').text(msg));
         // });
-
         //box 1
         socket.on('Person', function(msg){
         $("#people").append($('<li>').text(msg));
@@ -294,11 +296,10 @@
         //count1 = "Total People Msg: " + count1;
         document.getElementById('output1').innerHTML = count1;
         $("#people li").click(function(){
-        socket.emit('query', $(this));
-        $(entity).text(this);
+        socket.emit('query', $(this).html());
+        $(entity).text($(this).html());
         });
         });
-
         //box 2
         socket.on('Location', function(msg){
         $('#location').append($('<li>').text(msg));
@@ -307,10 +308,9 @@
         document.getElementById('output2').innerHTML = count2;
         $("#location li").click(function(){
         socket.emit('query', $(this));
-        $(entity).text(this);
+        $(entity).text($(this).html());
         });
         });
-
         //box 3
         socket.on('Quantity', function(msg){
         $('#quantity').append($('<li>').text(msg));
@@ -319,10 +319,9 @@
         document.getElementById('output3').innerHTML = count3;
         $("#quantity li").click(function(){
         socket.emit('query', $(this));
-        $(entity).text(this);
+        $(entity).text($(this).html());
         });
         });
-
         //box 4
         socket.on('Other', function(msg){
         $('#other').append($('<li>').text(msg));
@@ -331,10 +330,9 @@
         document.getElementById('output4').innerHTML = count4;
         $("#other li").click(function(){
         socket.emit('query', $(this));
-        $(entity).text(this);
+        $(entity).text($(this).html());
         });
         });
-
         //concept
         socket.on('concept', function(msg){
         let conceptNumber = '#concept' + conceptCount; 
@@ -343,7 +341,6 @@
         $(abstractNumber).text(msg.abstract);
         conceptCount += 1;
         });
-
         socket.on('passage', function(msg){
           $(originaltext).text(msg);
         });
