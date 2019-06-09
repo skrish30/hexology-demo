@@ -46,14 +46,18 @@
         #other-title {position: absolute; bottom: 275%; left: 30%;}
         #other li:nth-last-child(1) { color:crimson; }
         #video_controls_var {position: absolute; bottom: -5%; left: -25%;}
-        #concept1 {text-align:center; color:darkorange; font-size: 15px;}
-        #abstract1 {text-align:center; color:darkblue; font-size: 8px;}
-        #concept2 {text-align:center; color:rgb(230, 191, 144); font-size: 15px;}
-        #abstract2 {text-align:center; color:darkblue; font-size: 8px;}
-        #concept3 {text-align:center; color:darkorange; font-size: 15px;}
-        #abstract3 {text-align:center; color:darkblue; font-size: 8px;}
-        #concept4 {text-align:center; bottom: 500%; left: 30%; color:darkorange; font-size: 15px;}
-        #abstract4 {text-align:center;; color:darkblue; font-size: 8px;}
+
+        #concept1 {position: absolute; color:darkorange; font-size: 20px; top: -650%; left: 40%;}
+        #abstract1 {position: absolute; color:darkblue; font-size: 15px; top: -550%; left: 5%;}
+        #concept2 {position: absolute; color:darkorange; font-size: 20px; top: -650%; left: 40%;}
+        #abstract2 {position: absolute; color:darkblue; font-size: 15px; top: -550%; left: 5%;}
+        #concept3 {position: absolute; color:darkorange; font-size: 20px; top: -650%; left: 40%;}
+        #abstract3 {position: absolute; color:darkblue; font-size: 15px; top: -550%; left: 5%;}
+        #concept4 {position: absolute; color:darkorange; font-size: 20px; top: -650%; left: 40%;}
+        #abstract4 {position: absolute; color:darkblue; font-size: 15px; top: -550%; left: 5%;}
+
+        #entity {position:absolute; color:black; font-size: 20px; top: 7%; left: 32.5%;}
+        #originaltext {position: absolute; font-size: 15px; top: 15%; left: 5%;}
     </style>
 </head>
     
@@ -268,7 +272,6 @@
 <script>
     //Counts the concept that is coming in
     let conceptCount = 1; 
-
     $(function () {
         var socket = io();
         setTimeout(()=>{
