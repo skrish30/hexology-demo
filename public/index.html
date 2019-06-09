@@ -262,6 +262,7 @@
         //btn.innerHTML = "Play";
         }
     }
+    
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script
@@ -347,6 +348,10 @@
         socket.on('passage', function(msg){
           $(originaltext).text(msg);
         });
+
+        socket.on('video', function(msg){
+          $("#my_video").attr("src", msg)
+        })
     });
     
         function show(x,y,z){
