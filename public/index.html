@@ -21,32 +21,14 @@
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
         #messages li:nth-child(odd) { background: #eee; }
-        #chatbot {border-style: solid; border-color:cadetblue; border-radius: 10px; background-image: url('./images/chatbackground.jpg');}
-        #title {color: white}       
-        #header { background: url(./images/headbackground.jpg); }
-        #content {height: 450px; overflow: auto;}
-        #chatbotheader {font-size: 25px; color:crimson;}
+        #chatbot {border-style: solid; border-color:cadetblue; border-radius: 10px; background-image: url('./images/chatbackground.jpg');}     
+        #chatbotheader {font:Helvetica; font-size: 25px; color:crimson;}
         #top {color:crimson; font-size: 5em; font-weight: 'bold'; font-family: 'Helvetica', cursive; margin: 0;}
         
-        #middle {height: 450px; width: 1200px;}
-        #people {position: absolute; top: 30%; left: 37.5%; font-size: 20px; color: rgb(14, 2, 66);}
-        #people-title {position: absolute; left: 30%;}
-        #people li:nth-last-child(1) { color:crimson; }
-        #location {position: absolute; top: 30%; left: 40%; font-size: 20px; color: rgb(14, 2, 66);}
-        #location-title {text-align: top}
-        #location li:nth-last-child(1) { color:crimson; }
-        #quantity {position: absolute; top: 30%; left: 40%; font-size: 20px; color: rgb(14, 2, 66);}
-        #quantity-title {position: absolute; bottom: 275%; left: 30%;}
-        #quantity li:nth-last-child(1) { color:crimson; }
-        #other {position: absolute; top: 30%; left: 40%; font-size: 20px; color: rgb(14, 2, 66);}
-        #other-title {position: absolute; bottom: 275%; left: 30%;}
-        #other li:nth-last-child(1) { color:crimson; }
-        #video_controls_var {position: absolute; bottom: -5%; left: -25%;}
-
-
-
-        #entity {position:absolute; color:black; font-size: 20px; top: 30%; left: 32.5%;}
-        #originaltext {position: absolute; font-size: 15px; top: 40%; left: 10%; width: 70%;}
+        #people li:nth-last-child(1) { color:rgb(255, 0, 51); font-weight:bold;}
+        #location li:nth-last-child(1) { color:rgb(255, 0, 51); font-weight:bold;}
+        #quantity li:nth-last-child(1) { color:rgb(255, 0, 51); font-weight:bold;}
+        #other li:nth-last-child(1) { color:rgb(255, 0, 51); font-weight:bold;}
     </style>
 </head>
     
@@ -55,8 +37,8 @@
 <div class="container-fluid">
     <div class="container mt-2 mb-2" class="container-fluid px-0">
         <h11 id="top">#hexology</h11>
-        <h1>Unlock The Magic</h1>
-         <p>For anyone that wants to share their digital media in a real location, </br><a href="https://hexology.co/">Hexology</a> is the social media app that puts your content into the #physicalworld.</p> 
+        <h1 style="color:#eee; font-style:italic">Unlock The Magic</h1>
+         <p style="color:rgb(196, 194, 194); font:bold;">For anyone that wants to share their digital media in a real location, </br>Hexology is the social media app that puts your content into the #physicalworld.</p> 
     </div>
 
     <div class="container-fluid">
@@ -72,7 +54,7 @@
                 <div class="container-fluid px-0" style="height: 100% ">
                     <div class="container  text-center" id="chatbot" style="height: 100% " > 
                         <h10 id="chatbotheader">Hexology Chatbot</h10>
-                        <div class="container" style="height: 80%; overflow:auto;max-height: 27rem;" >
+                        <div class="container" style="height: 80%; overflow:auto;max-height: 28rem;" >
                         <ul id="messages"></ul>
                         </div>
                         <div class="container-fluid">
@@ -90,33 +72,33 @@
         <div class="row" id="bigBox">
             <div class="col">
                 <div class="container-fluid px-0" id="customBox">
-                    <h2>Concept</h2>
+                    <h2 style="color:red">Concept</h2>
                     <div id="conceptleft">
                         <div id="carouselExampleCaptions2" class="carousel slide" data-ride="carousel" data-interval="false">
 
                           <div class="carousel-inner" class=conceptText>
                             <div class="carousel-item active">
 
-                                <h5 id="concept1" class=conceptTitle>hi</h5>
-                                <p id="abstract1" class=conceptAbstract>efefefefefe2e2e</p>
+                                <h5 id="concept1" class="conceptTitle" style="color: #82cec6;"></h5>
+                                <p id="abstract1" class="conceptAbstract"></p>
 
                             </div>
                             <div class="carousel-item">
                               
-                                <h6 id="concept2" class=conceptTitle>hi2</h6>
-                                <p id="abstract2" class=conceptAbstract></p>
+                                <h6 id="concept2" class="conceptTitle" style="color: #ff8686;">hi2</h6>
+                                <p id="abstract2" class="conceptAbstract"></p>
                               
                             </div>
                             <div class="carousel-item">
                               
-                                <h7 id="concept3" class=conceptTitle>hi3</h7>
-                                <p id="abstract3" class=conceptAbstract></p>
+                                <h7 id="concept3" class="conceptTitle" style="color: #7f92cf;">hi3</h7>
+                                <p id="abstract3" class="conceptAbstract"></p>
                               
                             </div>
                             <div class="carousel-item">
                               
-                                <h8 id="concept4" class=conceptTitle></h8>
-                                <p id="abstract4" class=conceptAbstract></p>
+                                <h8 id="concept4" class="conceptTitle" style="color: #9d7ed0;">hi4</h8>
+                                <p id="abstract4" class="conceptAbstract"></p>
                               
                             </div>
                           </div>
@@ -135,60 +117,51 @@
             </div>
             <div class="col">
                 <div  class="container-fluid px-0" id="customBox">
-                    <h2>Entities</h2>
+                    <h2 style="color:orange">Entities</h2>
                     <div class="container">            
                         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="false">
-                            <!-- <ol class="carousel-indicators">
-                                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-                                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-                                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-                                <li data-target="#carouselExampleCaptions" data-slide-to="3"></li>
-                            </ol> -->
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <h1 id="people-title">People</h1>
+                                    <h1 style="color: #82cec6;" class="entityTitle">People</h1>
                                     <div class="carousel-caption d-none d-md-block">
-                                        <!-- <h1 id="people-title">People</h1> -->
                                         <button type="button" class="btn btn-primary btn-sm">
                                         Notifications <span class="badge badge-light" id="output1"></span>
                                         </button>
                                     </div>
-                                    <div class="people">
+                                    <div class="entityList">
                                         <ul id="people"></ul>                         
                                     </div>                  
                                 </div>
                                 <div class="carousel-item">
-                                    <h2 id="location-title">Location</h2>
-                                    <div class="carousel-caption d-none d-md-block">
-                                    
+                                    <h2 style="color: #ff8686;" class="entityTitle">Location</h2>
+                                    <div class="carousel-caption d-none d-md-block">                                   
                                     <button type="button" class="btn btn-primary">
                                     Notifications <span class="badge badge-light" id="output2"></span>
                                     </button>
                                     </div>
-                                    <div class="location">
+                                    <div class="entityList">
                                         <ul id="location"></ul>
                                     </div>
                                 </div>
                                 <div class="carousel-item">
-                                    <h3 id="quantity-title">Quantity</h>
-                                  <div class="carousel-caption d-none d-md-block">
-                                    
+                                    <h3 style="color: #7f92cf;" class="entityTitle">Quantity</h>
+                                  <div class="carousel-caption d-none d-md-block">                                   
                                     <button type="button" class="btn btn-primary">
                                     Notifications <span class="badge badge-light" id="output3"></span>
                                     </button>
                                   </div>
-                                  <div class="quantity">
+                                  <div class="entityList">
                                     <ul id="quantity"></ul>
                                   </div>
                                 </div>
                                 <div class="carousel-item">
+                                    <h4 style="color: #9d7ed0;" class="entityTitle">Other</h4>
                                     <div class="carousel-caption d-none d-md-block">
-                                        <h4 id="other-title">Other</h4>
                                         <button type="button" class="btn btn-primary">
                                         Notifications <span class="badge badge-light" id="output4"></span>
                                         </button>
                                     </div>
-                                    <div class="other">
+                                    <div class="entityList">
                                         <ul id="other"></ul>
                                     </div>
                                 </div>
@@ -207,7 +180,7 @@
             </div>
             <div class="col">
                 <div  class="container-fluid" id="customBox">
-                    <h2>passage</h2>          
+                    <h2 style="color:yellow">Passage</h2>          
                       <div class="container text-center">
                   
                           <h9 id="entity"></h9>
@@ -227,7 +200,6 @@
         <button id="playpausebtn" style="background-color:transparent; width: 55px; height: 55px;" class="hide" onclick="playPause(this,'my_video')"></button>
     </div>
   
-
       <div class="container" id="chat_controls" style="position :fixed; bottom: 0; right: -30%;">
         <button id="showbutton" onclick="show(this, 'chatbot', 'hidebutton')" style="width: 5%; background: rgb(130, 224, 255); border: none; padding: 10px; display: none;">Show</button>
         <button id="hidebutton" onclick="hide(this, 'chatbot', 'showbutton')" style="width: 5%; background: rgb(130, 224, 255); border: none; padding: 10px;">Hide</button>
@@ -343,7 +315,6 @@
         socket.on('passage', function(msg){
           $(originaltext).text(msg);
         });
-
         socket.on('video', function(msg){
           $("#my_video").attr("src", msg)
         })
