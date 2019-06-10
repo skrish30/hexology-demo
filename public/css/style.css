@@ -44,9 +44,9 @@
     color: white;
     font-family: "Source Sans Pro", sans-serif;
     font-size: 14pt;
-	font-weight: 300;
-  line-height: 1.65;
-  height: 100%
+	  font-weight: 300;
+    line-height: 1.65;
+    height: 100%
 }
 
 #green{
@@ -85,8 +85,21 @@ body{
   color: white
 }
 .conceptTitle{
-  font-size: 20px
+  font-size: 25px
 }
 .conceptAbstract{
-  font-size: 12px
+  font-size: 15px;
+}
+.entityTitle{
+  font-size:25px;
+}
+.entityList{
+  font-size:20px;
+}
+#entity{
+  font-size:25px;
+  color: #82cec6;
+}
+#originaltext{
+  font-size:20px;
 }
