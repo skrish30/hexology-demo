@@ -141,8 +141,11 @@ io.on('connection', function(socket) {
         if(msg.indexOf('http') >= 0){
           //console.log(test);
           downloadVideo(msg)
+          setTimeout(()=>{
+            io.emit('video', 'video.mp4')
+            //myEmitter.emit('videoDownloaded');
+          },35000)
 
-          io.emit('video', 'video.mp4')
         }
         //console.log(res.output.generic[0]);
         reply = [];
@@ -247,13 +250,18 @@ myEmitter.on('event',(msg,filterid)=>{
                     let interest = concept.categories[0].label;
                     interest = concept.categories[0].label.slice(1) + "\/";
                     num = interest.search('\/')
-                    interest =interest.slice(0,num);
-                    if(interest === userInterest){
+                    if(interest.includes('science')){
+                        interest = interest.slice(num,-1)
+                    } else{
+                      interest =interest.slice(0,num);
+                    }
+                    console.log(interest)
+                    if(interest.includes(userInterest)){
                         //console.log(filterid);
                         getDbpedia(concept.concepts.replace(/ /g,"_"))
                         //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
                         //queryDiscoveryNews(concept)
-                    };
+                    }; 
                     //print out the avaliable interests
                     //console.log(concept.categories[0].label, "\t\t" + concept.concepts)
                 });

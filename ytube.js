@@ -12,7 +12,7 @@ function downloadVideo(videoURL){
   validateURL(videoURL)
   .then((URL)=>{
     console.log("valid URL", "Downloading......")
-    videoStream = fs.createWriteStream('aliens-video');
+    videoStream = fs.createWriteStream('./public/video.mp4');
     ytdl(URL)
       .pipe(videoStream);
     videoStream.on('close',() =>{
