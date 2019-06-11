@@ -20,7 +20,7 @@
         body { font: 15px Helvetica, Arial; overflow: scroll; }
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; word-wrap:break-word;}
-        #messages li:nth-child(odd) { background: #eee; }
+        /* #messages li:nth-child(odd) { background: #eee; } */
         #chatbot {border-style: solid; border-color:cadetblue; border-radius: 10px; background-image: url('./images/chatbackground.jpg');}     
         #chatbotheader {font:Helvetica; font-size: 25px; color:crimson;}
         #top {color:crimson; font-size: 5em; font-weight: 'bold'; font-family: 'Helvetica', cursive; margin: 0;}
@@ -256,7 +256,7 @@
         return false;
         });
         socket.on('user message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li>').text(msg).attr('style',  'background-color:white'));
         });
         
 
