@@ -243,13 +243,23 @@
     $(function () {
         var socket = io();
         setTimeout(()=>{
-        socket.emit('chat message', 'a user has connected')
+        socket.emit('user message', 'a user has connected')
       },2000)
+        // $('#send_message').submit(function(){
+        // socket.emit('chat message', $('#m').val());
+        // $('#m').val('');
+        // return false;
+        // });
         $('#send_message').submit(function(){
-        socket.emit('chat message', $('#m').val());
+        socket.emit('user message', $('#m').val());
         $('#m').val('');
         return false;
         });
+        socket.on('user message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+        });
+        
+
         socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
         });

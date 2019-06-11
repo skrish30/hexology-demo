@@ -115,10 +115,10 @@ io.on('connection', function(socket) {
     
 
   // Handle incomming chat messages
-  socket.on('chat message', function(msg) {
+  socket.on('user message', function(msg) {
 
-    console.log('chat message: ' + msg);
-    io.emit('chat message', "you: " + msg);
+    console.log('user message: ' + msg);
+    io.emit('user message', "you: " + msg);
     
     /*****************************
         Send text to Conversation
