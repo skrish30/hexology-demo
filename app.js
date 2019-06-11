@@ -83,12 +83,15 @@ let entities=[
   "JobTitle",
 ];
 
-//var filterid = "";
-
+// var filterid = "";
 //create Events to set an order
 const EventEmitter = require('events');
 class MyEmitter extends EventEmitter{}
 const myEmitter = new MyEmitter();
+
+var assistantdone = 0
+var videodone = 0
+var userInterest = 'empty'
 
 io.on('connection', function(socket) {
   //console.log('a user has connected')
@@ -115,10 +118,10 @@ io.on('connection', function(socket) {
     
 
   // Handle incomming chat messages
-  socket.on('chat message', function(msg) {
+  socket.on('user message', function(msg) {
 
-    console.log('chat message: ' + msg);
-    io.emit('chat message', "you: " + msg);
+    console.log('user message: ' + msg);
+    io.emit('user message', "You: " + msg);
     
     /*****************************
         Send text to Conversation
@@ -137,6 +140,20 @@ io.on('connection', function(socket) {
     })
      .then(res => {
       if(res.output.generic[0].options){
+
+        if(msg.indexOf('http') >= 0){
+          setTimeout(()=>{
+            io.emit('chat message', 'Video downloading...It might take up to 30 seconds.')
+          },500)
+          //console.log(test);
+          downloadVideo(msg)
+          .then((message)=>{
+            console.log(message)
+            io.emit('video', 'video.mp4')
+            myEmitter.emit('video', 'audio.mp3') 
+          })
+
+        }
         //console.log(res.output.generic[0]);
         reply = [];
         tex_reply = [];
@@ -157,34 +174,25 @@ io.on('connection', function(socket) {
         io.emit('chat message',reply)
       } else if(res.output.generic[0].text){
         reply=(res.output.generic[0].text);
-        var test = res.output.generic[0].text;
-
-        if(test.indexOf('http') >= 0){
-          //console.log(test);
-
-          downloadVideo(test)
-        }
         io.emit('chat message',"Companion BOT: " + reply)
         if(reply=="Okay, concepts related to "+msg+" will be shown to you."){
-          queryString = msg
-          myEmitter.emit('event',msg);
+          userInterest = msg
+          io.emit('chat message', 'Video downloaded, click to play and start querying')
+          assistantdone = 1
         }
       }
 
-      console.log(reply);
+      //console.log(reply);
+      // var queryString = "";
 
-      var queryString = "";
-      var answer = [];
-      var categories = "";
-
-      queryString = msg
-      console.log(queryString)
+      // queryString = msg
+      // console.log(queryString)
 
       socket.on('query', function(msg) {
         entityString = msg
         console.log(msg);
         //console.log(filterid);
-        entityquery(entityString, filterid)
+        entityquery(entityString)
       })
 
     })
@@ -202,96 +210,96 @@ app.get('/', function(req, res){
 /*****************************
     Print entities by type
 ******************************/
-myEmitter.on('event',(msg,filterid)=>{
+myEmitter.on('startQuery',(msg)=>{
   setTimeout(()=>{
-    READFile(Types)
+    // READFile(Types)
     console.log("start emitting")
   },8000)
+    setTimeout(()=>{
 
-  var filterid = filterid;
-
-  setTimeout(()=>{
-
-    readJson('data.json')
-    .then((results)=> {
-        elements = [];
-        //console.log(concepts);
-        results.forEach(concepts=>{
-        const analyzeParams = {
-            'text':'I am interested in ' + concepts,
-            'features': {
-              'categories': {
-                'limit': 3
+      readJson('data.json')
+      .then((results)=> {
+          elements = [];
+          //console.log(concepts);
+          results.forEach(concepts=>{
+          const analyzeParams = {
+              'text':'I am interested in ' + concepts,
+              'features': {
+                'categories': {
+                  'limit': 3
+                }
               }
-            }
-          };
-          //print all the concepts
-          //console.log(analyzeParams.text);
-          
-          naturalLanguageUnderstanding.analyze(analyzeParams)
-            .then(analysisResults => {
-                analysisResults.concepts = analyzeParams.text.slice(19);
-                elements.push(analysisResults)
-            })
-            .catch(err => {
-              console.log('error:', err);
-            });
-        });
+            };
+            //print all the concepts
+            //console.log(analyzeParams.text);
+            
+            naturalLanguageUnderstanding.analyze(analyzeParams)
+              .then(analysisResults => {
+                  analysisResults.concepts = analyzeParams.text.slice(19);
+                  elements.push(analysisResults)
+              })
+              .catch(err => {
+                console.log('error:', err);
+              });
+          });
 
-        setTimeout(function() {
-                //console.log(elements[0].categories[0].label)
-                console.log('matched interests');
-                //console.log(queryString);
-                userInterest = msg;
-                elements.forEach((concept)=>{
-                    let interest = concept.categories[0].label;
-                    interest = concept.categories[0].label.slice(1) + "\/";
-                    num = interest.search('\/')
-                    interest =interest.slice(0,num);
-                    if(interest === userInterest){
-                        //console.log(filterid);
-                        getDbpedia(concept.concepts.replace(/ /g,"_"))
-                        //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
-                        //queryDiscoveryNews(concept)
-                    };
-                    //print out the avaliable interests
-                    //console.log(concept.categories[0].label, "\t\t" + concept.concepts)
-                });
-                //return res.status(200).json({mes:'Successs'})
-            }, 5000);
+          setTimeout(function() {
+                  //console.log(elements[0].categories[0].label)
+                  console.log('matched interests');
+                  //console.log(queryString);
+                  elements.forEach((concept)=>{
+                      let interest = concept.categories[0].label;
+                      interest = concept.categories[0].label.slice(1) + "\/";
+                      num = interest.search('\/')
+                      if(interest.includes('science')){
+                          interest = interest.slice(num,-1)
+                      } else{
+                        interest =interest.slice(0,num);
+                      }
+                      console.log(interest)
+                      if(interest.includes(userInterest)){
+                          //console.log(filterid);
+                          getDbpedia(concept.concepts.replace(/ /g,"_"))
+                          //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
+                      }; 
+                      //print out the avaliable interests
+                      //console.log(concept.categories[0].label, "\t\t" + concept.concepts)
+                  });
+                  //return res.status(200).json({mes:'Successs'})
+              }, 5000);
+      })
+      .catch((err)=> console.log("error:",err))
+    
+    },5000);
+
+    var entitiyPromise = new Promise((resolve,reject)=>{
+      entities.forEach((entitity)=>{
+        //console.log(filterid)
+        queryDiscoveryEntities(entitity)
+        // fsPromises.writeFile("data"+entitity+".json", data)
+        // .then(()=> console.log("success"))
+        // .catch(()=> console.log("failure"))
+      });
+      resolve("Entities found")
+      reject(err);
     })
-    .catch((err)=> console.log("error:",err))
-  
-  },5000);
-
-  var entitiyPromise = new Promise((resolve,reject)=>{
-    entities.forEach((entitity)=>{
-      //console.log(filterid)
-      queryDiscoveryEntities(entitity, filterid)
-      // fsPromises.writeFile("data"+entitity+".json", data)
-      // .then(()=> console.log("success"))
-      // .catch(()=> console.log("failure"))
+    .then((res)=>{
+      console.log(res)
+      queryConcepts();
+    })
+    .catch((err)=>{
+      console.log("Entity Error", err);
     });
-    resolve("Entities found")
-    reject(err);
   })
-  .then((res)=>{
-    console.log(res)
-    queryConcepts(filterid);
-  })
-  .catch((err)=>{
-    console.log("Entity Error", err);
-  });
-})
 
 /*****************************
     Function Definitions
 ******************************/
-function queryConcepts(filterid){
+function queryConcepts(){
   const queryParams = {
   environment_id: process.env.ENVIRONMENT_ID,
   collection_id: process.env.COLLECTION_ID,
-  filter: "id::\""+filterid+"\"",
+  filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
 };
 
 discovery.query(queryParams)
@@ -358,12 +366,12 @@ function readJson(fileName){
 
 //reads file and returns the JSON object
 
-function queryDiscoveryEntities(entities,filterid){
+function queryDiscoveryEntities(entities){
   console.log(entities);
   const queryParams = {
     environment_id: process.env.ENVIRONMENT_ID,
     collection_id: process.env.COLLECTION_ID,
-    filter: "id::\""+filterid+"\"",
+    filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
     aggregation: "nested(enriched_text.entities).filter(enriched_text.entities.type::" + entities + ").term(enriched_text.entities.text,count:10)"
     
   };
@@ -383,7 +391,7 @@ function queryDiscoveryEntities(entities,filterid){
 
 //categoise entities and send to the web page
 
-function entityquery(entityString, filterid){
+function entityquery(entityString){
   //console.log(entityString)
   
   let queryParams ={
@@ -392,7 +400,7 @@ function entityquery(entityString, filterid){
     query: entityString, 
     passages: true,
     passages_characters: 150,
-    filter: "id::\""+filterid+"\"",
+    filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
   }
 
   discovery.query(queryParams)
@@ -446,39 +454,3 @@ function READFile(Types){
 }
 
 //create files with entities of all types
-//queryDiscoveryNews("earth");
-
-function queryDiscoveryNews(concept){
-  let queryParams ={
-    environment_id: "news-en",
-    collection_id: "system",
-    query: concept, 
-    title: true,
-    url: true,
-  }
-  discovery.query(queryParams)
-    .then(queryResponse =>{
-      //console.log(JSON.stringify(queryResponse, null, 2));
-      /*
-      fsPromises.writeFile("data.txt", JSON.stringify(queryResponse, null, 2))
-        .then(()=> console.log("success"))
-        .catch(()=> console.log("failure"))
-      */
-      
-      queryResponse0 = queryResponse.results[0].title;
-      queryResponse1 = queryResponse.results[0].url;
-
-      console.log('successful query');
-
-      queryResponse = queryResponse.replace(entityString,entityString.toUpperCase())
-      console.log(queryResponse)
-      io.emit('concept',queryResponse0, queryResponse1)
-      
-    })
-    .catch(err =>{
-      console.log('error',err)
-    });
-
-}
-
-//query the concept in discovery news
