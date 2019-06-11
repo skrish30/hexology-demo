@@ -9,9 +9,11 @@ const fs = require('fs');
 const fsPromises=require('fs').promises;
 const request = require('request');
 const downloadVideo = require('./ytube.js')
-//modules for V2 assistant
-var bodyParser = require('body-parser'); // parser for post requests
+const streamvideo = require('./speech2text.js')
 
+//modules for V2 assistant
+var bodyParser = require('body-parser'); 
+// parser for post requests
 
 //Import Watson Developer Cloud SDK
 var AssistantV2 = require('watson-developer-cloud/assistant/v2'); // watson sdk
@@ -29,14 +31,6 @@ app.use(bodyParser.json());
   var assistant = new AssistantV2({
   version: '2018-11-08'
 });
-
-var newContext = {
-  global : {
-    system : {
-      turn_count : 1
-    }
-  }
-};
 
 // Create the Discovery object
 const discovery = new DiscoveryV1({
@@ -65,6 +59,7 @@ fsPromises.writeFile("data.json",'')
         .then(()=> console.log("data created"))
         .catch(()=> console.log("failure"))
 
+//global parameters
 let Types=[
   "Person",
   "Location",
@@ -82,20 +77,15 @@ let entities=[
   "Facility",
   "JobTitle",
 ];
+var userInterest = 'empty'
 
-// var filterid = "";
 //create Events to set an order
 const EventEmitter = require('events');
 class MyEmitter extends EventEmitter{}
 const myEmitter = new MyEmitter();
 
-var assistantdone = 0
-var videodone = 0
-var userInterest = 'empty'
-
 io.on('connection', function(socket) {
   //console.log('a user has connected')
-
 
   var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
   if (!assistantId || assistantId === '<assistant-id>>') {
@@ -181,26 +171,17 @@ io.on('connection', function(socket) {
           assistantdone = 1
         }
       }
-
-      //console.log(reply);
-      // var queryString = "";
-
-      // queryString = msg
-      // console.log(queryString)
-
       socket.on('query', function(msg) {
         entityString = msg
         console.log(msg);
         //console.log(filterid);
         entityquery(entityString)
       })
-
     })
     .catch(err => {
       console.log(err);
     });
   });
-
 });
 
 app.get('/', function(req, res){
@@ -208,13 +189,9 @@ app.get('/', function(req, res){
 });
 
 /*****************************
-    Print entities by type
+  After streaming the video
 ******************************/
 myEmitter.on('startQuery',(msg)=>{
-  setTimeout(()=>{
-    // READFile(Types)
-    console.log("start emitting")
-  },8000)
     setTimeout(()=>{
 
       readJson('data.json')
@@ -231,8 +208,7 @@ myEmitter.on('startQuery',(msg)=>{
               }
             };
             //print all the concepts
-            //console.log(analyzeParams.text);
-            
+              
             naturalLanguageUnderstanding.analyze(analyzeParams)
               .then(analysisResults => {
                   analysisResults.concepts = analyzeParams.text.slice(19);
@@ -242,6 +218,7 @@ myEmitter.on('startQuery',(msg)=>{
                 console.log('error:', err);
               });
           });
+          //get categories of concepts from NLU
 
           setTimeout(function() {
                   //console.log(elements[0].categories[0].label)
@@ -269,8 +246,8 @@ myEmitter.on('startQuery',(msg)=>{
               }, 5000);
       })
       .catch((err)=> console.log("error:",err))
-    
     },5000);
+    //search concepts on DBpedia
 
     var entitiyPromise = new Promise((resolve,reject)=>{
       entities.forEach((entitity)=>{
@@ -285,11 +262,16 @@ myEmitter.on('startQuery',(msg)=>{
     })
     .then((res)=>{
       console.log(res)
+      setTimeout(()=>{
+        READFile(Types)
+        console.log("start emitting")
+      },2000)
       queryConcepts();
     })
     .catch((err)=>{
       console.log("Entity Error", err);
     });
+    //query the entities clicked by user
   })
 
 /*****************************
@@ -315,7 +297,6 @@ discovery.query(queryParams)
     console.log('error:', err);
   });
 };
-
 //get concepts from discovery and match with user interests
 
 function getDbpedia(concept){
@@ -339,7 +320,6 @@ function getDbpedia(concept){
   //return found[0].value;
   });
 };
-
 //search concepts in dbpedia
 
 function readJson(fileName){
@@ -363,7 +343,6 @@ function readJson(fileName){
       });
   })
   };
-
 //reads file and returns the JSON object
 
 function queryDiscoveryEntities(entities){
@@ -388,7 +367,6 @@ function queryDiscoveryEntities(entities){
       console.log('errorssssss:', err);
     });
 }
-
 //categoise entities and send to the web page
 
 function entityquery(entityString){
@@ -424,7 +402,6 @@ function entityquery(entityString){
       console.log('error',err)
     });
 }
-
 //query the entity in discovery
 
 function READFile(Types){
@@ -452,5 +429,4 @@ function READFile(Types){
     })
   });
 }
-
 //create files with entities of all types
