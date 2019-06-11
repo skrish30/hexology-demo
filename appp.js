@@ -90,6 +90,8 @@ const EventEmitter = require('events');
 class MyEmitter extends EventEmitter{}
 const myEmitter = new MyEmitter();
 
+var videodone = 0
+
 io.on('connection', function(socket) {
   //console.log('a user has connected')
 
@@ -115,10 +117,10 @@ io.on('connection', function(socket) {
     
 
   // Handle incomming chat messages
-  socket.on('chat message', function(msg) {
+  socket.on('user message', function(msg) {
 
-    console.log('chat message: ' + msg);
-    io.emit('chat message', "you: " + msg);
+    console.log('user message: ' + msg);
+    io.emit('user message', "You: " + msg);
     
     /*****************************
         Send text to Conversation
@@ -139,12 +141,17 @@ io.on('connection', function(socket) {
       if(res.output.generic[0].options){
 
         if(msg.indexOf('http') >= 0){
+          setTimeout(()=>{
+            io.emit('chat message', 'Video downloading...It might take up to 30 seconds.')
+          },500)
           //console.log(test);
           downloadVideo(msg)
-          setTimeout(()=>{
+          .then((message)=>{
+            console.log(message)
             io.emit('video', 'video.mp4')
-            //myEmitter.emit('videoDownloaded');
-          },35000)
+            videodone = 1
+            console.log(videodone);
+          })
 
         }
         //console.log(res.output.generic[0]);
@@ -172,6 +179,7 @@ io.on('connection', function(socket) {
         io.emit('chat message',"Companion BOT: " + reply)
         if(reply=="Okay, concepts related to "+msg+" will be shown to you."){
           queryString = msg
+          io.emit('chat message', 'Video downloaded, click to play and start querying')
           myEmitter.emit('event',msg);
         }
       }
@@ -206,90 +214,92 @@ app.get('/', function(req, res){
     Print entities by type
 ******************************/
 myEmitter.on('event',(msg,filterid)=>{
-  setTimeout(()=>{
-    READFile(Types)
-    console.log("start emitting")
-  },8000)
+  if(videodone == 1){
+    setTimeout(()=>{
+      // READFile(Types)
+      console.log("start emitting")
+    },8000)
 
-  //var filterid = filterid;
-  
-  setTimeout(()=>{
+    //var filterid = filterid;
+    
+    setTimeout(()=>{
 
-    readJson('data.json')
-    .then((results)=> {
-        elements = [];
-        //console.log(concepts);
-        results.forEach(concepts=>{
-        const analyzeParams = {
-            'text':'I am interested in ' + concepts,
-            'features': {
-              'categories': {
-                'limit': 3
+      readJson('data.json')
+      .then((results)=> {
+          elements = [];
+          //console.log(concepts);
+          results.forEach(concepts=>{
+          const analyzeParams = {
+              'text':'I am interested in ' + concepts,
+              'features': {
+                'categories': {
+                  'limit': 3
+                }
               }
-            }
-          };
-          //print all the concepts
-          //console.log(analyzeParams.text);
-          
-          naturalLanguageUnderstanding.analyze(analyzeParams)
-            .then(analysisResults => {
-                analysisResults.concepts = analyzeParams.text.slice(19);
-                elements.push(analysisResults)
-            })
-            .catch(err => {
-              console.log('error:', err);
-            });
-        });
+            };
+            //print all the concepts
+            //console.log(analyzeParams.text);
+            
+            naturalLanguageUnderstanding.analyze(analyzeParams)
+              .then(analysisResults => {
+                  analysisResults.concepts = analyzeParams.text.slice(19);
+                  elements.push(analysisResults)
+              })
+              .catch(err => {
+                console.log('error:', err);
+              });
+          });
 
-        setTimeout(function() {
-                //console.log(elements[0].categories[0].label)
-                console.log('matched interests');
-                //console.log(queryString);
-                userInterest = msg;
-                elements.forEach((concept)=>{
-                    let interest = concept.categories[0].label;
-                    interest = concept.categories[0].label.slice(1) + "\/";
-                    num = interest.search('\/')
-                    if(interest.includes('science')){
-                        interest = interest.slice(num,-1)
-                    } else{
-                      interest =interest.slice(0,num);
-                    }
-                    console.log(interest)
-                    if(interest.includes(userInterest)){
-                        //console.log(filterid);
-                        getDbpedia(concept.concepts.replace(/ /g,"_"))
-                        //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
-                        //queryDiscoveryNews(concept)
-                    }; 
-                    //print out the avaliable interests
-                    //console.log(concept.categories[0].label, "\t\t" + concept.concepts)
-                });
-                //return res.status(200).json({mes:'Successs'})
-            }, 5000);
+          setTimeout(function() {
+                  //console.log(elements[0].categories[0].label)
+                  console.log('matched interests');
+                  //console.log(queryString);
+                  userInterest = msg;
+                  elements.forEach((concept)=>{
+                      let interest = concept.categories[0].label;
+                      interest = concept.categories[0].label.slice(1) + "\/";
+                      num = interest.search('\/')
+                      if(interest.includes('science')){
+                          interest = interest.slice(num,-1)
+                      } else{
+                        interest =interest.slice(0,num);
+                      }
+                      console.log(interest)
+                      if(interest.includes(userInterest)){
+                          //console.log(filterid);
+                          getDbpedia(concept.concepts.replace(/ /g,"_"))
+                          //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
+                          //queryDiscoveryNews(concept)
+                      }; 
+                      //print out the avaliable interests
+                      //console.log(concept.categories[0].label, "\t\t" + concept.concepts)
+                  });
+                  //return res.status(200).json({mes:'Successs'})
+              }, 5000);
+      })
+      .catch((err)=> console.log("error:",err))
+    
+    },5000);
+
+    var entitiyPromise = new Promise((resolve,reject)=>{
+      entities.forEach((entitity)=>{
+        //console.log(filterid)
+        queryDiscoveryEntities(entitity)
+        // fsPromises.writeFile("data"+entitity+".json", data)
+        // .then(()=> console.log("success"))
+        // .catch(()=> console.log("failure"))
+      });
+      resolve("Entities found")
+      reject(err);
     })
-    .catch((err)=> console.log("error:",err))
-  
-  },5000);
-
-  var entitiyPromise = new Promise((resolve,reject)=>{
-    entities.forEach((entitity)=>{
-      //console.log(filterid)
-      queryDiscoveryEntities(entitity)
-      // fsPromises.writeFile("data"+entitity+".json", data)
-      // .then(()=> console.log("success"))
-      // .catch(()=> console.log("failure"))
+    .then((res)=>{
+      console.log(res)
+      queryConcepts();
+    })
+    .catch((err)=>{
+      console.log("Entity Error", err);
     });
-    resolve("Entities found")
-    reject(err);
-  })
-  .then((res)=>{
-    console.log(res)
-    queryConcepts();
-  })
-  .catch((err)=>{
-    console.log("Entity Error", err);
-  });
+  }
 })
 
 /*****************************

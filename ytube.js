@@ -8,21 +8,24 @@ const ytdl = require('ytdl-core');
 
 //How to call function in main file
 function downloadVideo(videoURL){
-  let start = Date.now();
-  validateURL(videoURL)
-  .then((URL)=>{
-    console.log("valid URL", "Downloading......")
-    videoStream = fs.createWriteStream('./public/video.mp4');
-    ytdl(URL)
-      .pipe(videoStream);
-    videoStream.on('close',() =>{
-      console.log(`Download took  ${Math.floor((Date.now()-start)/1000)} seconds`)
+  return new Promise((resolve,reject)=>{
+    let start = Date.now();
+    validateURL(videoURL)
+    .then((URL)=>{
+      console.log("valid URL", "Downloading......")
+      videoStream = fs.createWriteStream('./public/video.mp4');
+      ytdl(URL)
+        .pipe(videoStream);
+      videoStream.on('close',() =>{
+        resolve(`Download took  ${Math.floor((Date.now()-start)/1000)} seconds`)  
       })
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  });
 }
+
 
 function validateURL(videoURL){
   return new Promise((resolve,reject)=>{
