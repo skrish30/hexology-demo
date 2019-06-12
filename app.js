@@ -9,7 +9,7 @@ const fs = require('fs');
 const fsPromises=require('fs').promises;
 const request = require('request');
 const downloadVideo = require('./ytube.js')
-const streamvideo = require('./speech2text.js')
+const speech2text=require('./newspeechText');
 
 //modules for V2 assistant
 var bodyParser = require('body-parser'); 
@@ -77,7 +77,9 @@ let entities=[
   "Facility",
   "JobTitle",
 ];
-var userInterest = 'empty'
+let userInterest = 'empty'
+let uploadCount =0;
+let audioFileName = "audio.mp3"
 
 //create Events to set an order
 const EventEmitter = require('events');
@@ -138,9 +140,11 @@ io.on('connection', function(socket) {
           //console.log(test);
           downloadVideo(msg)
           .then((message)=>{
-            console.log(message)
-            io.emit('video', 'video.mp4')
-            myEmitter.emit('video', 'audio.mp3') 
+            setTimeout(()=>{
+              console.log(message)
+              io.emit('video', 'video.mp4')
+              myEmitter.emit('video', 'audio.mp3') 
+            },10000)
           })
 
         }
@@ -273,6 +277,59 @@ myEmitter.on('startQuery',(msg)=>{
     });
     //query the entities clicked by user
   })
+
+  //***********Events **************************************************/
+
+myEmitter.on('video',(audioFileName)=>{
+  speech2text.getTranscript(audioFileName);
+})
+
+myEmitter.once('video',()=>{
+  setInterval(()=>{
+    uploadCount +=1;
+    myEmitter.emit('readTranscript');
+},30000)
+});
+
+myEmitter.on('readTranscript', () => {
+  console.log('an event occurred!');
+  let outputRead = fs.createReadStream('./transcripts')
+  outputRead.setEncoding('utf8')
+  //prints the output
+  //outputRead.pipe(process.stdout)
+  readTranscript(outputRead)
+  .then((message)=>{
+      //let transcriptObject=JSON.parse(message)
+      //console.log(JSON.parse(message))
+      console.log(message)
+      //upload doc.json in the current directory
+      speech2text.discoveryUpload(message,uploadCount)
+      .then((message)=>{
+          console.log(message)
+          myEmitter.emit('startQuery');
+      })
+      .catch(()=>{"Upload error...."})
+  })
+  
+  function readTranscript(readable){
+      return new Promise((resolve,reject)=>{
+          let data = null;
+          readable.on('data', (chunk) => {
+                  if(data==null){
+                      data = chunk
+                  } else{
+                      data += chunk
+                  }
+              
+              })
+          
+          readable.on('end', () => {
+              resolve(data)
+          });
+      })
+  }
+});
+
 
 /*****************************
     Function Definitions
@@ -430,3 +487,56 @@ function READFile(Types){
   });
 }
 //create files with entities of all types
+
+//***********Events **************************************************/
+
+myEmitter.on('video',(audioFileName)=>{
+    speech2text.getTranscript(audioFileName);
+  })
+  
+  myEmitter.once('video',()=>{
+    setInterval(()=>{
+      uploadCount +=1;
+      myEmitter.emit('readTranscript');
+  },15000)
+  });
+  
+  myEmitter.on('readTranscript', () => {
+    console.log('an event occurred!');
+    let outputRead = fs.createReadStream('./transcripts')
+    outputRead.setEncoding('utf8')
+    //prints the output
+    //outputRead.pipe(process.stdout)
+    readTranscript(outputRead)
+    .then((message)=>{
+        //let transcriptObject=JSON.parse(message)
+        //console.log(JSON.parse(message))
+        console.log(message)
+        //upload doc.json in the current directory
+        speech2text.discoveryUpload(message,uploadCount)
+        .then((message)=>{
+            console.log(message)
+            myEmitter.emit('startQuery');
+        })
+        .catch(()=>{"Upload error...."})
+    })
+    
+    function readTranscript(readable){
+        return new Promise((resolve,reject)=>{
+            let data = null;
+            readable.on('data', (chunk) => {
+                    if(data==null){
+                        data = chunk
+                    } else{
+                        data += chunk
+                    }
+                
+                })
+            
+            readable.on('end', () => {
+                resolve(data)
+            });
+        })
+    }
+  });
+  
