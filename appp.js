@@ -178,18 +178,13 @@ io.on('connection', function(socket) {
 
         io.emit('chat message',"Companion BOT: " + reply)
         if(reply=="Okay, concepts related to "+msg+" will be shown to you."){
-          queryString = msg
+
           io.emit('chat message', 'Video downloaded, click to play and start querying')
           myEmitter.emit('event',msg);
         }
       }
 
       console.log(reply);
-
-      var queryString = "";
-
-      queryString = msg
-      console.log(queryString)
 
       socket.on('query', function(msg) {
         entityString = msg
@@ -213,12 +208,10 @@ app.get('/', function(req, res){
 /*****************************
     Print entities by type
 ******************************/
-myEmitter.on('event',(msg,filterid)=>{
-  if(videodone == 1){
-    setTimeout(()=>{
-      // READFile(Types)
-      console.log("start emitting")
-    },8000)
+myEmitter.on('event',(msg)=>{
+  //if(videodone == 1){
+    //setTimeout(()=>{
+    //},8000)
 
     //var filterid = filterid;
     
@@ -281,10 +274,10 @@ myEmitter.on('event',(msg,filterid)=>{
     
     },5000);
 
-    var entitiyPromise = new Promise((resolve,reject)=>{
-      entities.forEach((entitity)=>{
-        //console.log(filterid)
-        queryDiscoveryEntities(entitity)
+    var entityPromise = new Promise((resolve,reject)=>{
+      entities.forEach((entity)=>{
+
+        queryDiscoveryEntities(entity)
         // fsPromises.writeFile("data"+entitity+".json", data)
         // .then(()=> console.log("success"))
         // .catch(()=> console.log("failure"))
@@ -293,13 +286,17 @@ myEmitter.on('event',(msg,filterid)=>{
       reject(err);
     })
     .then((res)=>{
-      console.log(res)
+      console.log(res);
+      setTimeout(()=>{
+        READFile(Types)
+      },2000)
+      console.log("start emitting");
       queryConcepts();
     })
     .catch((err)=>{
       console.log("Entity Error", err);
     });
-  }
+  //}
 })
 
 /*****************************
@@ -447,7 +444,7 @@ function READFile(Types){
 
       Entype.forEach((number)=>{
         entities = number.key;
-        //console.log("Emit",Type,entities)
+        console.log("Emit",Type,entities)
 
         //io.emit(Type, entities)
         if(Type=="Person"||Type=="Quantity"||Type=="Location"){
