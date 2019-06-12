@@ -113,7 +113,8 @@ getTranscript: function(audioFileName){
         return startTranscription(recognizeStream)
     }).then((recognizeStream)=>{            
         //pipe in the audio
-        fs.createReadStream(audioFileName).pipe(throttle).pipe(recognizeStream);
+        console.log('./public/' + audioFileName)
+        fs.createReadStream('./public/' + audioFileName).pipe(throttle).pipe(recognizeStream);
         
         const transcriptData = fs.createWriteStream('transcriptData')
 
@@ -176,7 +177,7 @@ getTranscript: function(audioFileName){
 
 discoveryUpload: function(uploadData,uploadCount){
     return new Promise((resolve,reject)=>{
-    let fileName= "b" + uploadCount + ".json";
+    let fileName= "c" + uploadCount + ".json";
     fsPromises.writeFile('./'+fileName,JSON.stringify(
         {
             title:fileName,
@@ -196,8 +197,9 @@ discoveryUpload: function(uploadData,uploadCount){
             return this.checkUpload(docID)
           })
           .then((message)=>{
-            console.log(message)
-            resolve("Start Query")
+            console.log("message",message.msg)
+            console.log('newFD', message.id)
+            resolve({msg:"Start Query" , newID: message.id})
 
           })
           .catch((err)=>{console.log("Upload error",err)})
@@ -241,10 +243,11 @@ discoveryUpload: function(uploadData,uploadCount){
           console.log(documentStatus.status)
           if(documentStatus.status === "available"){
             console.log(documentStatus.status)
+            let filterID =  documentStatus.document_id
             setImmediate(()=>{
               clearInterval(intervalObject)
             })
-            resolve("done")
+            resolve({msg:"done", id:filterID})
           }
           
         })

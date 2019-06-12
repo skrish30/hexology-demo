@@ -1,34 +1,12 @@
-'use strict';
-const speech2text=require('./newspeechText');
-const EventEmitter = require('events');
-var fs = require('fs');
-const fsPromises=require('fs').promises;
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
-const express = require('express'); 
-require('dotenv').config({silent: true});
-const DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
-
-//**************Start Init */
-const app = express();
-app.use(express.static('./public'));
 
 
 //**************end INIT */
 
-let uploadCount =0;
 let audioFileName = "aliens_test.mp3"
 
-fsPromises.writeFile("categories.json",'')
-        .then(()=> console.log("categories created"))
-        .catch(()=> console.log("failure"))
-
-fsPromises.writeFile("data.json",'')
-        .then(()=> console.log("data created"))
-        .catch(()=> console.log("failure"))
 
 
-//***********Events **************************************************/
+//***********************      Events      **************************************************/
 setTimeout(()=>{
     myEmitter.emit('video', audioFileName)
 

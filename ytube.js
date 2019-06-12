@@ -27,7 +27,7 @@ function downloadVideo(videoURL){
     })
     .then((message)=>{
       console.log(message)
-      console.log('yooo')
+      // console.log('yooo')
       resolve("ready for speech text")
     })
     .catch((err)=>{
@@ -40,7 +40,7 @@ function convertmp3(){
     console.log("doing mp3 conversion")
     return new Promise((resolve,reject)=>{
       var proc = new ffmpeg({ source: './public/video.mp4', nolog: true })
-      proc.setFfmpegPath("./public/ffmpeg/bin/ffmpeg.exe")
+      proc.setFfmpegPath("/usr/bin/ffmpeg")
     .toFormat('mp3')
      .on('end', function() {
      resolve('file has been converted successfully');
@@ -82,8 +82,10 @@ function download(URL){
   })
 }
 
-downloadVideo('https://www.youtube.com/watch?v=_B8RaLCNUZw')
-  .then((message)=>{console.log(message)})
+// downloadVideo('https://www.youtube.com/watch?v=_B8RaLCNUZw')
+//   .then((message)=>{console.log(message)})
+
+
 // Use to get video info for reference
 //  ytdl.getInfo('https://www.youtube.com/watch?v=qaIghx4QRN4&t=24s')
 //     .then(res => {

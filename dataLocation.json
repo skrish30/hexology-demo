@@ -1,7 +1,7 @@
 {
   "type": "nested",
   "path": "enriched_text.entities",
-  "matching_results": 17,
+  "matching_results": 1,
   "aggregations": [
     {
       "type": "filter",
@@ -14,7 +14,7 @@
           "count": 10,
           "results": [
             {
-              "key": "Earth",
+              "key": "Britain",
               "matching_results": 1
             }
           ]
