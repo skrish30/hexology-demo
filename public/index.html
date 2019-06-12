@@ -22,7 +22,7 @@
         #messages li { padding: 5px 10px; word-wrap:break-word;}
         /* #messages li:nth-child(odd) { background: #eee; } */
         #chatbot {border-style: solid; border-color:cadetblue; border-radius: 10px; background-image: url('./images/chatbackground.jpg');}     
-        #chatbotheader {font:Helvetica; font-size: 25px; color:crimson;}
+        #chatbotheader {font:Helvetica; font-size: 25px; color:crimson; text-align:center} 
         #top {color:crimson; font-size: 5em; font-weight: 'bold'; font-family: 'Helvetica', cursive; margin: 0;}
         
         #people li:nth-last-child(1) { color:rgb(255, 0, 51); font-weight:bold;}
@@ -50,14 +50,15 @@
                     </video>
                 </div>
             </div>
-            <div class="col-3" style= "border-style: solid;">
+            <div class="col-4" style= "border-style: solid;">
                 <div class="container-fluid px-0" style="height: 100% ">
                     <div class="container  text-center" id="chatbot" style="height: 100% " > 
+
                         <h10 id="chatbotheader">Hexology Chatbot</h10>
-                        <div class="container" style="height: 80%; overflow:auto;max-height: 28rem;" >
+                        <div class="container pt-4" id="msgbox" style="height: 85%; overflow:auto;max-height: 29rem;" >
                         <ul id="messages"></ul>
                         </div>
-                        <div class="container-fluid">
+                        <div class="container-fluid" pt-3>
                         <form action="" id="send_message" style="background: #000;">
                         <div class="container-fluid">
                             <input id="m" autocomplete="off" style="float:left; width: 75%;border-style: solid;"/>
@@ -193,7 +194,8 @@
     </div>
 </div>
 
-    
+
+    </div>
 
 
     <!-- <div class="container text-center" id="video_controls_var">
@@ -257,11 +259,13 @@
         });
         socket.on('user message', function(msg){
         $('#messages').append($('<li>').text(msg).attr('style',  'background-color:white'));
+        myFunction()
         });
         
 
         socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
+        myFunction()
         });
         $('#playpausebtn').click(function(){
         socket.emit('timer','timer started')
@@ -344,4 +348,15 @@
         z.style.display = "block";
         x.style.display = "none";
         };
+</script>
+
+<script>
+        function myFunction() {
+        var objDiv = document.getElementById("msgbox");
+        objDiv.scrollTop = objDiv.scrollHeight;
+        }
+        // setInterval(()=>{
+        //   myFunction();
+    
+        // },3000)
 </script>

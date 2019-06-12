@@ -20,31 +20,39 @@
                     <button style="float:left; width: 9%; background: rgb(130, 224, 255); border: none;border-style: solid;">Send</button>
             </div>
             <h1 style="font-family: 'Source Sans Pro', sans-serif;">Hello</h1>
-            <div class="container">
-                    <div class="row">
-                      <div class="col">
-                        1 of 3
-                      </div>
-                      <div class="col-6">
-                        2 of 3 (wider)
-                      </div>
-                      <div class="col">
-                        3 of 3
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        1 of 3
-                      </div>
-                      <div class="col-5">
-                        2 of 3 (wider)
-                      </div>
-                      <div class="col">
-                        3 of 3
-                      </div>
-                    </div>
-                  </div>
-        
+            <!-- <button onclick="myFunction()">Scroll</button> -->
+            <ul id="list">
+              <li>hi</li>
+              <div style="height:20rem"></div>
+              <li>two</li>
+              <div style="height:20rem"></div>
+              <li>three</li>
+              <div style="height:20rem"></div>
+              <li>four</li>
+              <div style="height:20rem"></div>
+              <li id="five">five</li>
+
+            </ul>
+            
         <script src="" async defer></script>
+
+
     </body>
+
+
 </html>
+
+<script>
+    function myFunction() {
+      //var elmnt = document.getElementById("five");
+      //elmnt.scrollIntoView();
+      var element = document.getElementById("list");
+      element.scrollIntoView({block: "end"});
+    }
+    setInterval(()=>{
+      myFunction();
+
+    },3000)
+  </script>
+
+

@@ -103,3 +103,45 @@ body{
 #originaltext{
   font-size:20px;
 }
+
+/* body scroll */
+body::-webkit-scrollbar {
+    width: 1em;
+}
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+/* chatbox scroll */
+#msgbox::-webkit-scrollbar {
+  width: 1em;
+}
+#msgbox::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+#msgbox::-webkit-scrollbar-thumb {
+background-color: darkgrey;
+outline: 1px solid slategrey;
+}
+
+/* .container{
+  border-style: solid;
+  border-color: white
+}
+.container-fluid{
+  border-style: solid;
+  border-color: white
+}
+
+.row{
+  border-style: solid;
+  border-color: white
+}
+.col{
+  border-style: solid;
+  border-color: white
+} */
