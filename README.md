@@ -10,7 +10,6 @@ These instructions will get you a copy of the project up and running on your loc
 * Install npm and node js
 ```
 sudo npm install nodejs
-
 ```
 #### If running locally
 ```
@@ -19,7 +18,6 @@ node app.js
 #### If [pushing to ibmcloud](https://cloud.ibm.com/docs/cli?topic=cloud-cli-ibmcloud-cli&cm_mc_uid=71937158820415571550439&cm_mc_sid_50200000=40462371560869290847&cm_mc_sid_52640000=35702881560870241639#step2-verify-idt)
 ```
 ibmcloud cf push app
-
 ```
 
 ### Installing
