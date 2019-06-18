@@ -276,10 +276,8 @@
         // });
         //box 1
         socket.on('Person', function(msg){
+        $("#people").empty();
         $("#people").append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#people").empty()
-        },30000)
         var count1 = $("#people").children().length;
         //count1 = "Total People Msg: " + count1;
         document.getElementById('output1').innerHTML = count1;
@@ -290,10 +288,8 @@
         });
         //box 2
         socket.on('Location', function(msg){
+        $("#location").empty();
         $('#location').append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#location").empty()
-        },30000)
         var count2 = $("#location").children().length;
         //count2 = "Total Location Msg: " + count2;
         document.getElementById('output2').innerHTML = count2;
@@ -304,10 +300,8 @@
         });
         //box 3
         socket.on('Quantity', function(msg){
+        $("#quantity").empty();
         $('#quantity').append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#quantity").empty()
-        },30000)
         var count3 = $("#quantity").children().length;
         //count3 = "Total Quantity Msg: " + count3;
         document.getElementById('output3').innerHTML = count3;
@@ -318,10 +312,8 @@
         });
         //box 4
         socket.on('Other', function(msg){
+        $("#other").empty();
         $('#other').append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#other").empty()
-        },30000)
         var count4 = $("#other").children().length;
         //count4 = "Total Other Msg: " + count4;
         document.getElementById('output4').innerHTML = count4;
