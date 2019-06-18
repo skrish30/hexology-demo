@@ -12,54 +12,69 @@ These instructions will get you a copy of the project up and running on your loc
 sudo npm install nodejs
 ```
 #### If running locally
-```
-node app.js
-```
-#### If [pushing to ibmcloud](https://cloud.ibm.com/docs/cli?topic=cloud-cli-ibmcloud-cli&cm_mc_uid=71937158820415571550439&cm_mc_sid_50200000=40462371560869290847&cm_mc_sid_52640000=35702881560870241639#step2-verify-idt)
-```
-ibmcloud cf push app
-```
 
-### Installing
+1. Install the dependencies
 
-A step by step series of examples that tell you how to get a development env running
+    ```
+    npm install
+    ```
 
-Say what the step will be
+1. Run the application
 
-```
-Give the example
-```
+    ```
+    npm start
+    ```
 
-And repeat
+1. View the application in a browser at `localhost:3000`
 
-```
-until finished
-```
+#### If deploying to IBM Cloud as a Cloud Foundry Application
 
-End with an example of getting some data out of the system or using it for a little demo
+1. Login to IBM Cloud with the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/index.html#overview)
 
-## Running the tests
+    ```
+    ibmcloud login
+    ```
 
-Explain how to run the automated tests for this system
+1. Target a Cloud Foundry organization and space.
 
-### Break down into end to end tests
+    ```
+    ibmcloud target --cf
+    ```
 
-Explain what these tests test and why
+1. Edit the *manifest.yml* file. Change the **name** field to something unique.  
+  For example, `- name: my-app-name`.
+1. Deploy the application
 
-```
-Give an example
-```
+    ```
+    ibmcloud app push
+    ```
 
-### And coding style tests
+1. View the application online at the app URL.  
+For example: https://my-app-name.mybluemix.net
 
-Explain what these tests test and why
+## Building the system
 
-```
-Give an example
-```
+Explain what has been done to develop the system
+
+### Back-end (Watson) Services
+
+#### Watson Assistant
+
+#### Watson Speech to Text
+
+#### Watson Discovery
+
+
+### Front-end server (webpage)
+
+#### Webpage Design
+
 
 ## Deployment
 
+### Running the system
+
+### Debugging
 Add additional notes about how to deploy this on a live system
 
 ## Built With
@@ -72,9 +87,6 @@ Add additional notes about how to deploy this on a live system
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
