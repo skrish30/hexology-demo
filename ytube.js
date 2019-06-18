@@ -23,40 +23,9 @@ function downloadVideo(videoURL){
     .catch((err)=>{
       console.log(err)
     })
-    .then((message)=>{
-      console.log(message)
-      return convertmp3()
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-    .then((message)=>{
-      console.log(message)
-      // console.log('yooo')
-      resolve("ready for speech text")
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
   });
 }
 
-function convertmp3(){
-    console.log("doing mp3 conversion")
-    return new Promise((resolve,reject)=>{
-      var proc = new ffmpeg({ source: './public/video.mp4', nolog: true })
-      proc.setFfmpegPath("/usr/bin/ffmpeg")
-    .toFormat('mp3')
-     .on('end', function() {
-     resolve('file has been converted successfully');
-     })
-     .on('error', function(err) {
-     console.log('an error happened: ' + err.message);
-     })
-     // save to file <-- the new file I want -->
-     .saveToFile('./public/audio.mp3');     
-    })
-  }
 
 function validateURL(videoURL){
   return new Promise((resolve,reject)=>{
@@ -70,17 +39,6 @@ function validateURL(videoURL){
     }
   })
 }
-
-
-    videoStream.on('close',() =>{
-      resolve(`Download took  ${Math.floor((Date.now()-start)/1000)} seconds`)  
-    })
-    videoStream.on('error',(err)=>{reject(err)})
-  })
-}
-
-// downloadVideo('https://www.youtube.com/watch?v=_B8RaLCNUZw')
-//   .then((message)=>{console.log(message)})
 
 
 // Use to get video info for reference

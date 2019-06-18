@@ -83,6 +83,7 @@ let entities=[
   "JobTitle",
 ];
 
+
 //var filterid = "";
 
 //create Events to set an order
@@ -91,10 +92,26 @@ class MyEmitter extends EventEmitter{}
 const myEmitter = new MyEmitter();
 
 var videodone = 0
+//Panopto
+//let filterID = "3c44134260e6037fef15877eeb71eb0b";
+let filterID = "05feb44d3c30fe016a0a11cd090fb253"
+// fs.writeFile('./public/video.mp4', "hello", (err) => {
+//   if (err) throw err;
+//   console.log('The file has been saved!');
+// });
 
 io.on('connection', function(socket) {
   //console.log('a user has connected')
-
+  socket.on('ID',(vidID)=>{
+    filterID = vidID;
+    console.log(filterID)
+  })
+  socket.on('panopto',()=>{
+    socket.emit('video','panopto.mp4')
+    setTimeout(()=>{
+      myEmitter.emit('event',"science")
+    },6000)
+  })
 
   var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
   if (!assistantId || assistantId === '<assistant-id>>') {
@@ -258,7 +275,9 @@ myEmitter.on('event',(msg)=>{
                         interest =interest.slice(0,num);
                       }
                       console.log(interest)
-                      if(interest.includes(userInterest)){
+                      //if(interest.includes(userInterest)){
+                      if(true){
+                    
                           //console.log(filterid);
                           getDbpedia(concept.concepts.replace(/ /g,"_"))
                           //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
@@ -303,10 +322,11 @@ myEmitter.on('event',(msg)=>{
     Function Definitions
 ******************************/
 function queryConcepts(){
+  
   const queryParams = {
   environment_id: process.env.ENVIRONMENT_ID,
   collection_id: process.env.COLLECTION_ID,
-  filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
+  filter: "id::\"" +  filterID + "\""
 };
 
 discovery.query(queryParams)
@@ -328,7 +348,11 @@ discovery.query(queryParams)
 function getDbpedia(concept){
   let requestURL = "http://dbpedia.org/data/"+ concept + ".json";
   request(requestURL, { json: true }, (err, res, body) => {
-  if (err) { return console.log(err); }
+  let foundd=true
+    if (err) { 
+    return console.log(err);
+   }
+
   let resourceURL = "http://dbpedia.org/resource/"+ concept;
   //All the languages
   //console.log(body[resourceURL]['http://dbpedia.org/ontology/abstract']);
@@ -378,7 +402,7 @@ function queryDiscoveryEntities(entities){
   const queryParams = {
     environment_id: process.env.ENVIRONMENT_ID,
     collection_id: process.env.COLLECTION_ID,
-    filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
+    filter: "id::\"" +  filterID + "\"",
     aggregation: "nested(enriched_text.entities).filter(enriched_text.entities.type::" + entities + ").term(enriched_text.entities.text,count:10)"
     
   };
@@ -407,7 +431,7 @@ function entityquery(entityString){
     query: entityString, 
     passages: true,
     passages_characters: 150,
-    filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
+    filter: "id::\"" +  filterID + "\""
   }
 
   discovery.query(queryParams)

@@ -41,13 +41,18 @@
          <p style="color:rgb(196, 194, 194); font:bold;">For anyone that wants to share their digital media in a real location, </br>Hexology is the social media app that puts your content into the #physicalworld.</p> 
     </div>
 
+    <div class="container-fluid">
+            <button type="button" class="btn btn-secondary" id="talk1">TED talk1</button>
+            <button type="button" class="btn btn-secondary" id="talk2">TED talk2</button>
+            <button type="button" class="btn btn-secondary" id="talk3">Panopto1</button>
+    </div>
 
     <div class="container-fluid">
         <div class="row">
             <div class="col" style= "border-style: solid;">
                 <div class="container">
                     <video id="my_video" width=100% height=50% controls autoplay>
-                       <source  type="video/mp4">
+                       <source  src="video.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -87,19 +92,19 @@
                             </div>
                             <div class="carousel-item">
                               
-                                <h6 id="concept2" class="conceptTitle" style="color: #ff8686;">hi2</h6>
+                                <h6 id="concept2" class="conceptTitle" style="color: #ff8686;"></h6>
                                 <p id="abstract2" class="conceptAbstract"></p>
                               
                             </div>
                             <div class="carousel-item">
                               
-                                <h7 id="concept3" class="conceptTitle" style="color: #7f92cf;">hi3</h7>
+                                <h7 id="concept3" class="conceptTitle" style="color: #7f92cf;"></h7>
                                 <p id="abstract3" class="conceptAbstract"></p>
                               
                             </div>
                             <div class="carousel-item">
                               
-                                <h8 id="concept4" class="conceptTitle" style="color: #9d7ed0;">hi4</h8>
+                                <h8 id="concept4" class="conceptTitle" style="color: #9d7ed0;"></h8>
                                 <p id="abstract4" class="conceptAbstract"></p>
                               
                             </div>
@@ -262,7 +267,23 @@
         $('#messages').append($('<li>').text(msg).attr('style',  'background-color:white'));
         myFunction()
         });
-        
+        $('#talk1').click(function(){
+        alert("A new class of drug that could prevent depression and PTSD:https://www.youtube.com/watch?v=tt2xKhTHZQs")
+        socket.emit('ID','4ebbe4874d701ce91fbf4f0bae8d0b8b')
+        })
+        $('#talk2').click(function(){
+        alert("Where are all the aliens?:https://www.youtube.com/watch?v=qaIghx4QRN4&t=1s")
+        socket.emit('ID','05feb44d3c30fe016a0a11cd090fb253')
+        })
+        $('#talk3').click(function(){
+            alert("Introduction to Power Engineering:")
+            socket.emit('ID','3c44134260e6037fef15877eeb71eb0b')
+            setTimeout(()=>{
+                socket.emit('panopto')
+            },3000)
+        })
+
+
         socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
         myFunction()
@@ -277,9 +298,6 @@
         //box 1
         socket.on('Person', function(msg){
         $("#people").append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#people").empty()
-        },30000)
         var count1 = $("#people").children().length;
         //count1 = "Total People Msg: " + count1;
         document.getElementById('output1').innerHTML = count1;
@@ -291,9 +309,6 @@
         //box 2
         socket.on('Location', function(msg){
         $('#location').append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#location").empty()
-        },30000)
         var count2 = $("#location").children().length;
         //count2 = "Total Location Msg: " + count2;
         document.getElementById('output2').innerHTML = count2;
@@ -305,9 +320,6 @@
         //box 3
         socket.on('Quantity', function(msg){
         $('#quantity').append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#quantity").empty()
-        },30000)
         var count3 = $("#quantity").children().length;
         //count3 = "Total Quantity Msg: " + count3;
         document.getElementById('output3').innerHTML = count3;
@@ -319,9 +331,6 @@
         //box 4
         socket.on('Other', function(msg){
         $('#other').append($('<li>').text(msg));
-        setTimeout(()=>{
-        $("#other").empty()
-        },30000)
         var count4 = $("#other").children().length;
         //count4 = "Total Other Msg: " + count4;
         document.getElementById('output4').innerHTML = count4;
@@ -342,8 +351,27 @@
           $(originaltext).text(msg);
         });
         socket.on('video', function(msg){
-          $("#my_video").attr("src", msg)
+            setTimeout(()=>{
+        $("#my_video").attr("src", msg);
+        // setTimeout(()=>{
+        //     $('#my_video')[0].load()
+        //   },3000) 
+        // setTimeout(()=>{
+        //     $('#my_video')[0].play()
+        //   },8000)
+
+            },2000)
+        //   var vid= document.getElementById("my_video")
+        //   vid.src = msg;
+        //   setTimeout(()=>{
+        //     $("#my_video")[0].load();
+        //   },1900)
+        //   setTimeout(()=>{
+        //     vid.play()
+        //   },5000)
+
         })
+
     });
     
         function show(x,y,z){
@@ -372,3 +400,4 @@
     
         // },3000)
 </script>
+

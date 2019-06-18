@@ -1,18 +1,47 @@
 {
   "type": "nested",
   "path": "enriched_text.entities",
-  "matching_results": 4,
+  "matching_results": 34,
   "aggregations": [
     {
       "type": "filter",
       "match": "enriched_text.entities.type::Company",
-      "matching_results": 0,
+      "matching_results": 7,
       "aggregations": [
         {
           "type": "term",
           "field": "enriched_text.entities.text",
           "count": 10,
-          "results": []
+          "results": [
+            {
+              "key": "BMW",
+              "matching_results": 1
+            },
+            {
+              "key": "Boeing",
+              "matching_results": 1
+            },
+            {
+              "key": "Dodge",
+              "matching_results": 1
+            },
+            {
+              "key": "Edison",
+              "matching_results": 1
+            },
+            {
+              "key": "Exxon",
+              "matching_results": 1
+            },
+            {
+              "key": "U. K. Malta Singapore",
+              "matching_results": 1
+            },
+            {
+              "key": "Westinghouse",
+              "matching_results": 1
+            }
+          ]
         }
       ]
     }

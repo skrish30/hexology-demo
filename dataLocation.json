@@ -1,18 +1,51 @@
 {
   "type": "nested",
   "path": "enriched_text.entities",
-  "matching_results": 4,
+  "matching_results": 34,
   "aggregations": [
     {
       "type": "filter",
       "match": "enriched_text.entities.type::Location",
-      "matching_results": 0,
+      "matching_results": 9,
       "aggregations": [
         {
           "type": "term",
           "field": "enriched_text.entities.text",
           "count": 10,
-          "results": []
+          "results": [
+            {
+              "key": "London",
+              "matching_results": 2
+            },
+            {
+              "key": "Belgrade",
+              "matching_results": 1
+            },
+            {
+              "key": "China",
+              "matching_results": 1
+            },
+            {
+              "key": "Europe",
+              "matching_results": 1
+            },
+            {
+              "key": "Germany",
+              "matching_results": 1
+            },
+            {
+              "key": "Hong Kong",
+              "matching_results": 1
+            },
+            {
+              "key": "Los",
+              "matching_results": 1
+            },
+            {
+              "key": "North America",
+              "matching_results": 1
+            }
+          ]
         }
       ]
     }

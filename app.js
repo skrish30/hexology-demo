@@ -45,25 +45,6 @@ const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
   url: process.env.NATURAL_LANGUAGE_UNDERSTANDING_URL
 });
 
-var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
-if (!assistantId || assistantId === '<assistant-id>>') {
-  return res.json({
-    'output': {
-      'text': 'The app has not been configured with a <b>ASSISTANT_ID</b> environment variable. Please refer to the ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple">README</a> documentation on how to set this variable. <br>' + 'Once a workspace has been defined the intents may be imported from ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
-    }
-  });
-}
-
-assistant.createSession({
-  assistant_id: process.env.ASSISTANT_ID || '{assistant_id}'
-})
-  .then(res => {
-    sessionId = res.session_id;
-  })
-  .catch(err => {
-    console.log(err);
-  });
-
 // start server on the specified port and binding host
 server.listen(appEnv.port, '0.0.0.0', function() {
   console.log("server starting on " + appEnv.url);
@@ -77,11 +58,6 @@ fsPromises.writeFile("categories.json",'')
 fsPromises.writeFile("data.json",'')
         .then(()=> console.log("data created"))
         .catch(()=> console.log("failure"))
-
-fs.writeFile('./public/video.mp4', "hello", (err) => {
-  if (err) throw err;
-  console.log('The file has been saved!');
-});
 
 //global parameters
 let Types=[
@@ -104,7 +80,6 @@ let entities=[
 let userInterest = 'empty'
 let uploadCount =0;
 let audioFileName = "audio.mp3"
-let filterID = null;
 
 //create Events to set an order
 const EventEmitter = require('events');
@@ -112,39 +87,38 @@ class MyEmitter extends EventEmitter{}
 const myEmitter = new MyEmitter();
 
 io.on('connection', function(socket) {
-
   //console.log('a user has connected')
 
-  // var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
-  // if (!assistantId || assistantId === '<assistant-id>>') {
-  //   return res.json({
-  //     'output': {
-  //       'text': 'The app has not been configured with a <b>ASSISTANT_ID</b> environment variable. Please refer to the ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple">README</a> documentation on how to set this variable. <br>' + 'Once a workspace has been defined the intents may be imported from ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
-  //     }
-  //   });
-  // }
+  var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
+  if (!assistantId || assistantId === '<assistant-id>>') {
+    return res.json({
+      'output': {
+        'text': 'The app has not been configured with a <b>ASSISTANT_ID</b> environment variable. Please refer to the ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple">README</a> documentation on how to set this variable. <br>' + 'Once a workspace has been defined the intents may be imported from ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
+      }
+    });
+  }
 
-  // assistant.createSession({
-  //   assistant_id: process.env.ASSISTANT_ID || '{assistant_id}'
-  // })
-  //   .then(res => {
-  //     sessionId = res.session_id;
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   });
+  assistant.createSession({
+    assistant_id: process.env.ASSISTANT_ID || '{assistant_id}'
+  })
+    .then(res => {
+      sessionId = res.session_id;
+    })
+    .catch(err => {
+      console.log(err);
+    });
     
 
   // Handle incomming chat messages
   socket.on('user message', function(msg) {
-  
+
     console.log('user message: ' + msg);
     io.emit('user message', "You: " + msg);
     
     /*****************************
         Send text to Conversation
     ******************************/
-  setTimeout(()=>{
+    
   assistant.message({
     assistant_id: assistantId,
     session_id: sessionId,
@@ -170,7 +144,7 @@ io.on('connection', function(socket) {
               console.log(message)
               io.emit('video', 'video.mp4')
               myEmitter.emit('video', 'audio.mp3') 
-            },500)
+            },10000)
           })
 
         }
@@ -211,11 +185,12 @@ io.on('connection', function(socket) {
     .catch(err => {
       console.log(err);
     });
-  },300)
-
   });
 });
 
+app.get('/', function(req, res){
+  res.sendFile('index.html');
+});
 
 /*****************************
   After streaming the video
@@ -304,10 +279,6 @@ myEmitter.on('startQuery',(msg)=>{
   })
 
   //***********Events **************************************************/
-myEmitter.on('filterID',(newID)=>{
-  filterID =  newID;
-  console.log('change ID',filterID)
-})
 
 myEmitter.on('video',(audioFileName)=>{
   speech2text.getTranscript(audioFileName);
@@ -334,12 +305,8 @@ myEmitter.on('readTranscript', () => {
       //upload doc.json in the current directory
       speech2text.discoveryUpload(message,uploadCount)
       .then((message)=>{
-          console.log('beforeID',message.msg)
-          console.log('newID', message.newID)
-          myEmitter.emit('filterID', message.newID);
-          setTimeout(()=>{
-            myEmitter.emit('startQuery');
-          },1200)
+          console.log(message)
+          myEmitter.emit('startQuery');
       })
       .catch(()=>{"Upload error...."})
   })
@@ -368,23 +335,13 @@ myEmitter.on('readTranscript', () => {
     Function Definitions
 ******************************/
 function queryConcepts(){
+  const queryParams = {
+  environment_id: process.env.ENVIRONMENT_ID,
+  collection_id: process.env.COLLECTION_ID,
+  filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
+};
 
-function setqueryParams(){
-  return new Promise((resolve,reject)=>{
-    const queryParams = {
-      environment_id: process.env.ENVIRONMENT_ID,
-      collection_id: process.env.COLLECTION_ID,
-      filter: "id::\"" +  filterID + "\""
-    }
-    resolve(queryParams)
-  })
-}
-
-setqueryParams()
-  .then((queryParams)=>{
-    console.log(queryParams)
-    return discovery.query(queryParams)
-  })
+discovery.query(queryParams)
   .then(queryResponse => {
     //print query results
     //console.log(JSON.stringify(queryResponse, null, 2));
@@ -450,7 +407,7 @@ function queryDiscoveryEntities(entities){
   const queryParams = {
     environment_id: process.env.ENVIRONMENT_ID,
     collection_id: process.env.COLLECTION_ID,
-    filter: "id::\"" +  filterID + "\"",
+    filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
     aggregation: "nested(enriched_text.entities).filter(enriched_text.entities.type::" + entities + ").term(enriched_text.entities.text,count:10)"
     
   };
@@ -460,8 +417,8 @@ function queryDiscoveryEntities(entities){
       //console.log(JSON.stringify(queryResponse.aggregations[0], null, 2));
       data=JSON.stringify(queryResponse.aggregations[0], null, 2);
     fsPromises.writeFile("data"+entities+".json", data)
-      .then(()=> console.log("successful query"))
-      .catch(()=> console.log("failure"))
+    .then(()=> console.log("successful query"))
+    .catch(()=> console.log("failure"))
     })
     .catch(err => {
       console.log('errorssssss:', err);
@@ -478,7 +435,7 @@ function entityquery(entityString){
     query: entityString, 
     passages: true,
     passages_characters: 150,
-    filter: "id::\"" +  filterID + "\""
+    filter: "id::\"05feb44d3c30fe016a0a11cd090fb253\"",
   }
 
   discovery.query(queryParams)
@@ -513,16 +470,16 @@ function READFile(Types){
       Entype = data.aggregations[0].aggregations[0].results;
 
       Entype.forEach((number)=>{
-        let entitybox = number.key;
-        //console.log("Emit",Type,entitybox)
+        entities = number.key;
+        //console.log("Emit",Type,entities)
 
-        //io.emit(Type, entitybox)
+        //io.emit(Type, entities)
         if(Type=="Person"||Type=="Quantity"||Type=="Location"){
-          io.emit(Type, entitybox)
-          console.log("Emit",Type, entitybox)
+          io.emit(Type, entities)
+          console.log("Emit",Type,entities)
         } else{
-          io.emit("Other",entitybox+","+ Type)
-          console.log("Other",entitybox +","+Type)
+          io.emit("Other",entities+","+ Type)
+          console.log("Other",entities +","+Type)
         }
 
       })
@@ -530,3 +487,56 @@ function READFile(Types){
   });
 }
 //create files with entities of all types
+
+//***********Events **************************************************/
+
+myEmitter.on('video',(audioFileName)=>{
+    speech2text.getTranscript(audioFileName);
+  })
+  
+  myEmitter.once('video',()=>{
+    setInterval(()=>{
+      uploadCount +=1;
+      myEmitter.emit('readTranscript');
+  },15000)
+  });
+  
+  myEmitter.on('readTranscript', () => {
+    console.log('an event occurred!');
+    let outputRead = fs.createReadStream('./transcripts')
+    outputRead.setEncoding('utf8')
+    //prints the output
+    //outputRead.pipe(process.stdout)
+    readTranscript(outputRead)
+    .then((message)=>{
+        //let transcriptObject=JSON.parse(message)
+        //console.log(JSON.parse(message))
+        console.log(message)
+        //upload doc.json in the current directory
+        speech2text.discoveryUpload(message,uploadCount)
+        .then((message)=>{
+            console.log(message)
+            myEmitter.emit('startQuery');
+        })
+        .catch(()=>{"Upload error...."})
+    })
+    
+    function readTranscript(readable){
+        return new Promise((resolve,reject)=>{
+            let data = null;
+            readable.on('data', (chunk) => {
+                    if(data==null){
+                        data = chunk
+                    } else{
+                        data += chunk
+                    }
+                
+                })
+            
+            readable.on('end', () => {
+                resolve(data)
+            });
+        })
+    }
+  });
+  

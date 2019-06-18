@@ -1,18 +1,31 @@
 {
   "type": "nested",
   "path": "enriched_text.entities",
-  "matching_results": 4,
+  "matching_results": 34,
   "aggregations": [
     {
       "type": "filter",
       "match": "enriched_text.entities.type::JobTitle",
-      "matching_results": 0,
+      "matching_results": 3,
       "aggregations": [
         {
           "type": "term",
           "field": "enriched_text.entities.text",
           "count": 10,
-          "results": []
+          "results": [
+            {
+              "key": "engineer",
+              "matching_results": 1
+            },
+            {
+              "key": "research manager",
+              "matching_results": 1
+            },
+            {
+              "key": "researcher",
+              "matching_results": 1
+            }
+          ]
         }
       ]
     }

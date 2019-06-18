@@ -1,18 +1,59 @@
 {
   "type": "nested",
   "path": "enriched_text.entities",
-  "matching_results": 4,
+  "matching_results": 34,
   "aggregations": [
     {
       "type": "filter",
       "match": "enriched_text.entities.type::Person",
-      "matching_results": 0,
+      "matching_results": 14,
       "aggregations": [
         {
           "type": "term",
           "field": "enriched_text.entities.text",
           "count": 10,
-          "results": []
+          "results": [
+            {
+              "key": "Aaron",
+              "matching_results": 1
+            },
+            {
+              "key": "Alex Alex",
+              "matching_results": 1
+            },
+            {
+              "key": "Brandon",
+              "matching_results": 1
+            },
+            {
+              "key": "Christy",
+              "matching_results": 1
+            },
+            {
+              "key": "Frank",
+              "matching_results": 1
+            },
+            {
+              "key": "Freddie Mercury",
+              "matching_results": 1
+            },
+            {
+              "key": "Jimmy Clausen",
+              "matching_results": 1
+            },
+            {
+              "key": "John Lucas",
+              "matching_results": 1
+            },
+            {
+              "key": "Jones",
+              "matching_results": 1
+            },
+            {
+              "key": "Michael",
+              "matching_results": 1
+            }
+          ]
         }
       ]
     }
