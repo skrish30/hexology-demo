@@ -1,7 +1,7 @@
 {
   "type": "nested",
   "path": "enriched_text.entities",
-  "matching_results": 1,
+  "matching_results": 4,
   "aggregations": [
     {
       "type": "filter",

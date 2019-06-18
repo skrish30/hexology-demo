@@ -78,6 +78,11 @@ fsPromises.writeFile("data.json",'')
         .then(()=> console.log("data created"))
         .catch(()=> console.log("failure"))
 
+fs.writeFile('./public/video.mp4', "hello", (err) => {
+  if (err) throw err;
+  console.log('The file has been saved!');
+});
+
 //global parameters
 let Types=[
   "Person",
@@ -363,13 +368,23 @@ myEmitter.on('readTranscript', () => {
     Function Definitions
 ******************************/
 function queryConcepts(){
-  const queryParams = {
-  environment_id: process.env.ENVIRONMENT_ID,
-  collection_id: process.env.COLLECTION_ID,
-  filter: "id::\"" +  filterID + "\""
-};
 
-discovery.query(queryParams)
+function setqueryParams(){
+  return new Promise((resolve,reject)=>{
+    const queryParams = {
+      environment_id: process.env.ENVIRONMENT_ID,
+      collection_id: process.env.COLLECTION_ID,
+      filter: "id::\"" +  filterID + "\""
+    }
+    resolve(queryParams)
+  })
+}
+
+setqueryParams()
+  .then((queryParams)=>{
+    console.log(queryParams)
+    return discovery.query(queryParams)
+  })
   .then(queryResponse => {
     //print query results
     //console.log(JSON.stringify(queryResponse, null, 2));
@@ -445,8 +460,8 @@ function queryDiscoveryEntities(entities){
       //console.log(JSON.stringify(queryResponse.aggregations[0], null, 2));
       data=JSON.stringify(queryResponse.aggregations[0], null, 2);
     fsPromises.writeFile("data"+entities+".json", data)
-    .then(()=> console.log("successful query"))
-    .catch(()=> console.log("failure"))
+      .then(()=> console.log("successful query"))
+      .catch(()=> console.log("failure"))
     })
     .catch(err => {
       console.log('errorssssss:', err);
