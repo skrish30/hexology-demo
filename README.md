@@ -1,17 +1,25 @@
-# Project Title
-
-One Paragraph of project description goes here
+# Hexology Conference Companion
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Prerequisites (Linux Ubuntu 16.04 LTS)
 
-What things you need to install the software and how to install them
+* Ensure you have a [IBM Cloud account](https://www.ibm.com/cloud/)
+* Install npm and node js
+```
+sudo npm install nodejs
 
 ```
-Give examples
+#### If running locally
+```
+node app.js
+```
+#### If [pushing to ibmcloud](https://cloud.ibm.com/docs/cli?topic=cloud-cli-ibmcloud-cli&cm_mc_uid=71937158820415571550439&cm_mc_sid_50200000=40462371560869290847&cm_mc_sid_52640000=35702881560870241639#step2-verify-idt)
+```
+ibmcloud cf push app
+
 ```
 
 ### Installing
