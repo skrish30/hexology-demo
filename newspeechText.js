@@ -22,67 +22,6 @@ const discovery = new DiscoveryV1({
   iam_apikey: process.env.DISCOVERY_IAM_APIKEY
 });
 
-
-
-//creat necessary documents
-// fsPromises.writeFile("categories.json",'')
-//         .then(()=> console.log("categories created"))
-//         .catch(()=> console.log("failure"))
-
-// fsPromises.writeFile("data.json",'')
-//         .then(()=> console.log("data created"))
-//         .catch(()=> console.log("failure"))
-
-//Global variables
-// let uploadCount =0;
-// let audioFileName = "aliens_test.mp3"
-
-//***********Events **************************************************/
-// myEmitter.on('video',(audioFileName)=>{
-//   getTranscript(audioFileName);
-// })
-
-// myEmitter.once('video',()=>{
-//   setInterval(()=>{
-//     uploadCount +=1;
-//     myEmitter.emit('readTranscript');
-// },30000)
-// });
-
-// myEmitter.on('readTranscript', () => {
-//   console.log('an event occurred!');
-//   let outputRead = fs.createReadStream('./transcripts')
-//   outputRead.setEncoding('utf8')
-//   //prints the output
-//   //outputRead.pipe(process.stdout)
-//   readTranscript(outputRead)
-//   .then((message)=>{
-//       //let transcriptObject=JSON.parse(message)
-//       //console.log(JSON.parse(message))
-//       console.log(message)
-//       //upload doc.json in the current directory
-//       discoveryUpload(message)
-//   })
-  
-//   function readTranscript(readable){
-//       return new Promise((resolve,reject)=>{
-//           let data = null;
-//           readable.on('data', (chunk) => {
-//                   if(data==null){
-//                       data = chunk
-//                   } else{
-//                       data += chunk
-//                   }
-              
-//               })
-          
-//           readable.on('end', () => {
-//               resolve(data)
-//           });
-//       })
-//   }
-// });
-
 //***********speech2text **************************************************/
 
 let speech2text ={
@@ -106,12 +45,14 @@ getTranscript: function(audioFileName){
         })
     }
 
-    setAudioParams().then((message)=>{
+    setAudioParams()
+    .then((message)=>{
         //create the stream
         var recognizeStream = speechToText.recognizeUsingWebSocket(message.audioParams);
-        console.log(message.msg)
+        logger.debug(message.msg)
         return startTranscription(recognizeStream)
-    }).then((recognizeStream)=>{            
+    })
+    .then((recognizeStream)=>{            
         //pipe in the audio
         console.log('./public/' + audioFileName)
         fs.createReadStream('./public/' + audioFileName).pipe(throttle).pipe(recognizeStream);
@@ -128,7 +69,7 @@ getTranscript: function(audioFileName){
                 ////print one sentence
                 //console.log(transcript)
                 transcripts.write(transcript,'utf8')
-                console.log('files written')
+                logger.silly("New Sentence")
                 //event.results[0].alternatives[0].transcript
             };
         });
@@ -159,11 +100,6 @@ getTranscript: function(audioFileName){
         return new Promise((resolve,reject)=>{
             let date = moment().format();
             var startStream = new Promise((resolve,reject)=>{
-                fs.createWriteStream('log').write(date,'utf8',()=>{
-                    if("error"){
-                        reject("timer error" + "error")
-                    }
-                })
                 resolve(date);
             })
             .then((date)=> {

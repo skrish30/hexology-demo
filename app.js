@@ -10,13 +10,17 @@ const fsPromises=require('fs').promises;
 const request = require('request');
 const downloadVideo = require('./ytube.js')
 const speech2text=require('./newspeechText');
+const logger = require('./logger');
+const path = require("path")
+
+logger.info("Program started");
 
 //modules for V2 assistant
 var bodyParser = require('body-parser'); 
 // parser for post requests
 
 //Import Watson Developer Cloud SDK
-var AssistantV2 = require('watson-developer-cloud/assistant/v2'); // watson sdk
+var AssistantV2 = require('watson-developer-cloud/assistant/v2'); 
 const DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
 const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1.js');
 
@@ -45,15 +49,6 @@ const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
   url: process.env.NATURAL_LANGUAGE_UNDERSTANDING_URL
 });
 
-var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
-if (!assistantId || assistantId === '<assistant-id>>') {
-  return res.json({
-    'output': {
-      'text': 'The app has not been configured with a <b>ASSISTANT_ID</b> environment variable. Please refer to the ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple">README</a> documentation on how to set this variable. <br>' + 'Once a workspace has been defined the intents may be imported from ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
-    }
-  });
-}
-
 assistant.createSession({
   assistant_id: process.env.ASSISTANT_ID || '{assistant_id}'
 })
@@ -61,27 +56,26 @@ assistant.createSession({
     sessionId = res.session_id;
   })
   .catch(err => {
-    console.log(err);
+    logger.error(err)
   });
 
 // start server on the specified port and binding host
 server.listen(appEnv.port, '0.0.0.0', function() {
-  console.log("server starting on " + appEnv.url);
+  logger.info("server starting on " + appEnv.url);
 });
 
 //creat necessary documents
 fsPromises.writeFile("categories.json",'')
-        .then(()=> console.log("categories created"))
-        .catch(()=> console.log("failure"))
+        .then(()=> logger.debug("categories created"))
+        .catch((err)=> logger.error(err))
 
-fsPromises.writeFile("data.json",'')
-        .then(()=> console.log("data created"))
-        .catch(()=> console.log("failure"))
+fsPromises.writeFile("./datas/data.json",'')
+        .then(()=> logger.debug("data created"))
+        .catch((err)=> logger.error(err))
 
-fs.writeFile('./public/video.mp4', "hello", (err) => {
-  if (err) throw err;
-  console.log('The file has been saved!');
-});
+fsPromises.writeFile('./public/video.mp4','')
+  .then(()=>{logger.debug("video replaced")})
+  .catch((err)=>{logger.error(err)})
 
 //global parameters
 let Types=[
@@ -113,40 +107,17 @@ const myEmitter = new MyEmitter();
 
 io.on('connection', function(socket) {
 
-  //console.log('a user has connected')
-
-  // var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
-  // if (!assistantId || assistantId === '<assistant-id>>') {
-  //   return res.json({
-  //     'output': {
-  //       'text': 'The app has not been configured with a <b>ASSISTANT_ID</b> environment variable. Please refer to the ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple">README</a> documentation on how to set this variable. <br>' + 'Once a workspace has been defined the intents may be imported from ' + '<a href="https://github.com/watson-developer-cloud/assistant-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
-  //     }
-  //   });
-  // }
-
-  // assistant.createSession({
-  //   assistant_id: process.env.ASSISTANT_ID || '{assistant_id}'
-  // })
-  //   .then(res => {
-  //     sessionId = res.session_id;
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   });
-    
-
   // Handle incomming chat messages
   socket.on('user message', function(msg) {
   
-    console.log('user message: ' + msg);
-    io.emit('user message', "You: " + msg);
+  io.emit('user message', "You: " + msg);
     
     /*****************************
-        Send text to Conversation
+        Send text to Watson Assistant 
     ******************************/
   setTimeout(()=>{
   assistant.message({
-    assistant_id: assistantId,
+    assistant_id: process.env.ASSISTANT_ID,
     session_id: sessionId,
     input: {
       'message_type': 'text',
@@ -163,34 +134,32 @@ io.on('connection', function(socket) {
           setTimeout(()=>{
             io.emit('chat message', 'Video downloading...It might take up to 30 seconds.')
           },500)
-          //console.log(test);
+          //Download the video with the specified URl link
           downloadVideo(msg)
           .then((message)=>{
             setTimeout(()=>{
-              console.log(message)
+              logger.info(message)
               io.emit('video', 'video.mp4')
               myEmitter.emit('video', 'audio.mp3') 
             },500)
           })
-
         }
-        //console.log(res.output.generic[0]);
         reply = [];
-        tex_reply = [];
-        tex_reply.push("Please select the fields that you are interested in: \n");
+        text_reply = [];
+        text_reply.push("Please select the fields that you are interested in: \n");
         res.output.generic[0].options.forEach(option => {
           reply.push(option.label);
         });
 
         if(msg=="science"){
           reply = [];
-          tex_reply = [];
-          tex_reply.push("Please select which field in science that you are interested in: \n"); 
+          text_reply = [];
+          text_reply.push("Please select which field in science that you are interested in: \n"); 
           res.output.generic[0].options.forEach(option => {
             reply.push(option.label);
           });
         }
-        io.emit('chat message',"Companion BOT: " + tex_reply)
+        io.emit('chat message',"Companion BOT: " + text_reply)
         io.emit('chat message',reply)
       } else if(res.output.generic[0].text){
         reply=(res.output.generic[0].text);
@@ -198,13 +167,11 @@ io.on('connection', function(socket) {
         if(reply=="Okay, concepts related to "+msg+" will be shown to you."){
           userInterest = msg
           io.emit('chat message', 'Video downloaded, click to play and start querying')
-          assistantdone = 1
         }
       }
       socket.on('query', function(msg) {
         entityString = msg
         console.log(msg);
-        //console.log(filterid);
         entityquery(entityString)
       })
     })
@@ -223,7 +190,7 @@ io.on('connection', function(socket) {
 myEmitter.on('startQuery',(msg)=>{
     setTimeout(()=>{
 
-      readJson('data.json')
+      readJson('./datas/data.json')
       .then((results)=> {
           elements = [];
           //console.log(concepts);
@@ -236,7 +203,6 @@ myEmitter.on('startQuery',(msg)=>{
                 }
               }
             };
-            //print all the concepts
               
             naturalLanguageUnderstanding.analyze(analyzeParams)
               .then(analysisResults => {
@@ -247,12 +213,11 @@ myEmitter.on('startQuery',(msg)=>{
                 console.log('error:', err);
               });
           });
-          //get categories of concepts from NLU
 
+          //get categories of concepts from NLU
           setTimeout(function() {
                   //console.log(elements[0].categories[0].label)
                   console.log('matched interests');
-                  //console.log(queryString);
                   elements.forEach((concept)=>{
                       let interest = concept.categories[0].label;
                       interest = concept.categories[0].label.slice(1) + "\/";
@@ -264,9 +229,7 @@ myEmitter.on('startQuery',(msg)=>{
                       }
                       console.log(interest)
                       if(interest.includes(userInterest)){
-                          //console.log(filterid);
                           getDbpedia(concept.concepts.replace(/ /g,"_"))
-                          //console.log(getDbpedia(concept.concepts.replace(/ /g,"_")));
                       }; 
                       //print out the avaliable interests
                       //console.log(concept.categories[0].label, "\t\t" + concept.concepts)
@@ -278,21 +241,11 @@ myEmitter.on('startQuery',(msg)=>{
     },5000);
     //search concepts on DBpedia
 
-    var entitiyPromise = new Promise((resolve,reject)=>{
-      entities.forEach((entitity)=>{
-        //console.log(filterid)
-        queryDiscoveryEntities(entitity)
-        // fsPromises.writeFile("data"+entitity+".json", data)
-        // .then(()=> console.log("success"))
-        // .catch(()=> console.log("failure"))
-      });
-      resolve("Entities found")
-      reject(err);
-    })
-    .then((res)=>{
-      console.log(res)
+    queryAllEntities()
+    .then((message)=>{
+      logger.debug(message)
       setTimeout(()=>{
-        READFile(Types)
+        readEntity(Types)
         console.log("start emitting")
       },2000)
       queryConcepts();
@@ -317,7 +270,7 @@ myEmitter.once('video',()=>{
   setInterval(()=>{
     uploadCount +=1;
     myEmitter.emit('readTranscript');
-},30000)
+  },30000)
 });
 
 myEmitter.on('readTranscript', () => {
@@ -369,36 +322,35 @@ myEmitter.on('readTranscript', () => {
 ******************************/
 function queryConcepts(){
 
-function setqueryParams(){
-  return new Promise((resolve,reject)=>{
-    const queryParams = {
-      environment_id: process.env.ENVIRONMENT_ID,
-      collection_id: process.env.COLLECTION_ID,
-      filter: "id::\"" +  filterID + "\""
-    }
-    resolve(queryParams)
-  })
-}
+  function setqueryParams(){
+    return new Promise((resolve,reject)=>{
+      const queryParams = {
+        environment_id: process.env.ENVIRONMENT_ID,
+        collection_id: process.env.COLLECTION_ID,
+        filter: "id::\"" +  filterID + "\""
+      }
+      resolve(queryParams)
+    })
+  }
 
-setqueryParams()
-  .then((queryParams)=>{
-    console.log(queryParams)
-    return discovery.query(queryParams)
-  })
-  .then(queryResponse => {
-    //print query results
-    //console.log(JSON.stringify(queryResponse, null, 2));
-  data = JSON.stringify(queryResponse, null, 2);
-    fsPromises.writeFile("data.json", data)
-  .then(()=> console.log("Query logged in data.json"))
-  .catch(()=> console.log("failure"))
-  })
-  .catch(err => {
-    console.log('error:', err);
-  });
+  setqueryParams()
+    .then((queryParams)=>{
+      return discovery.query(queryParams)
+    })
+    .then(queryResponse => {
+      //print query results
+      //console.log(JSON.stringify(queryResponse, null, 2));
+      data = JSON.stringify(queryResponse, null, 2);
+      fsPromises.writeFile("./datas/data.json", data)
+      .then(()=> logger.debug("Query logged in data.json"))
+      .catch(()=> logger.error("failure"))
+    })
+    .catch(err => {
+      console.log('error:', err);
+    });
 };
-//get concepts from discovery and match with user interests
 
+//get concepts from discovery and match with user interests
 function getDbpedia(concept){
   let requestURL = "http://dbpedia.org/data/"+ concept + ".json";
   request(requestURL, { json: true }, (err, res, body) => {
@@ -445,29 +397,55 @@ function readJson(fileName){
   };
 //reads file and returns the JSON object
 
-function queryDiscoveryEntities(entities){
-  console.log(entities);
-  const queryParams = {
-    environment_id: process.env.ENVIRONMENT_ID,
-    collection_id: process.env.COLLECTION_ID,
-    filter: "id::\"" +  filterID + "\"",
-    aggregation: "nested(enriched_text.entities).filter(enriched_text.entities.type::" + entities + ").term(enriched_text.entities.text,count:10)"
-    
-  };
+function queryEntity(entities){
+  function setqueryParams(){
+    return new promises((resolve,reject)=>{
+      const queryParams = {
+        environment_id: process.env.ENVIRONMENT_ID,
+        collection_id: process.env.COLLECTION_ID,
+        filter: "id::\"" +  filterID + "\"",
+        aggregation: "nested(enriched_text.entities).filter(enriched_text.entities.type::" + entities + ").term(enriched_text.entities.text,count:10)"
+      };
+      resolve(queryParams)
+    })
+  }
 
-  discovery.query(queryParams)
+  return new Promise((resolve,reject)=>{
+    setqueryParams()
+    .then((queryParams)=>{
+      return discovery.query(queryParams)
+    })
     .then(queryResponse => {
       //console.log(JSON.stringify(queryResponse.aggregations[0], null, 2));
       data=JSON.stringify(queryResponse.aggregations[0], null, 2);
-    fsPromises.writeFile("data"+entities+".json", data)
-      .then(()=> console.log("successful query"))
-      .catch(()=> console.log("failure"))
-    })
+      fsPromises.writeFile(path.join('./datas',"data"+entities+".json"), data)
+      .then(()=> {
+        resolve(entities + "successful query")
+      })
+      .catch(()=> logger.error("failure"))
+      })
     .catch(err => {
       console.log('errorssssss:', err);
     });
+  })
 }
 //categoise entities and send to the web page
+
+function queryAllEntities(){
+  return new Promise((resolve,reject)=>{
+    entities.forEach((entity)=>{
+      queryEntity(entity)
+      .then((message)=>{
+        logger.debug(message)
+        fsPromises.writeFile(path.join("./datas","data"+entity+".json"), data)
+        .then(()=> logger.debug(entity + "written"))
+        .catch((err)=> logger.error(err))
+      })
+    });
+    resolve("All Entities found")
+    reject(err);
+  })
+}
 
 function entityquery(entityString){
   //console.log(entityString)
@@ -504,14 +482,12 @@ function entityquery(entityString){
 }
 //query the entity in discovery
 
-function READFile(Types){
+function readEntity(Types){
   Types.forEach((Type)=>{
     
-  fs.readFile('./data'+Type+'.json','utf8',(err,data)=>{
+  fs.readFile(path.join('./datas','data'+Type+'.json'),'utf8',(err,data)=>{
       data = JSON.parse(data);
-
       Entype = data.aggregations[0].aggregations[0].results;
-
       Entype.forEach((number)=>{
         let entitybox = number.key;
         //console.log("Emit",Type,entitybox)
