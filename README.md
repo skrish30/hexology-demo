@@ -60,12 +60,12 @@ Explain what has been done to develop the system
 
 #### Watson Assistant
 
-
+Watson Assistant is an artificial chatbot builder that allows you to construct a conversation interface into any application, device, or channel.
 #### Watson Speech to Text
 
 #### Watson Discovery
 
-
+Watson Discovery is a query tool that can add cognitive search and content analysis engines to identify patterns, trends, and actionable insights. It is able to integrate structured and unstructured data with certain topics or types of entities, filter documents from a large data set or passages from a single document with specified contents and provide tone analysis or keyword extractions.
 ### Front-end server (webpage)
 
 #### Webpage Design
@@ -80,9 +80,9 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* Watson Assistant - The web chatbot used. Version 2.0
+* Watson Speech to Text - Dependency Management
+* Watson Discovery - Used to query and filter transcript. Version 1.0
 
 ## Contributing
 
