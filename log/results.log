@@ -293,3 +293,9 @@
 2019-06-19 21:39:07 debug: ./datas folder removed
 2019-06-19 21:39:07 debug: ./datas folder created
 2019-06-19 21:39:07 debug: ./datas/concept created
+2019-06-19 23:58:54 info: Program started
+2019-06-19 23:58:55 info: server starting on http://localhost:6001
+2019-06-19 23:58:55 debug: video replaced
+2019-06-19 23:58:55 debug: ./datas folder removed
+2019-06-19 23:58:55 debug: ./datas folder created
+2019-06-19 23:58:55 debug: ./datas/concept created
