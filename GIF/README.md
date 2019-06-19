@@ -1,1 +1,1 @@
-#GIF images for documentation
+# GIF images for documentation
