@@ -87,19 +87,31 @@
                             </div>
                             <div class="carousel-item">
                               
+<<<<<<< Updated upstream
                                 <h6 id="concept2" class="conceptTitle" style="color: #ff8686;">hi2</h6>
+=======
+                                <h6 id="concept2" class="conceptTitle" style="color: #ff8686;"></h6>
+>>>>>>> Stashed changes
                                 <p id="abstract2" class="conceptAbstract"></p>
                               
                             </div>
                             <div class="carousel-item">
                               
+<<<<<<< Updated upstream
                                 <h7 id="concept3" class="conceptTitle" style="color: #7f92cf;">hi3</h7>
+=======
+                                <h7 id="concept3" class="conceptTitle" style="color: #7f92cf;"></h7>
+>>>>>>> Stashed changes
                                 <p id="abstract3" class="conceptAbstract"></p>
                               
                             </div>
                             <div class="carousel-item">
                               
+<<<<<<< Updated upstream
                                 <h8 id="concept4" class="conceptTitle" style="color: #9d7ed0;">hi4</h8>
+=======
+                                <h8 id="concept4" class="conceptTitle" style="color: #9d7ed0;"></h8>
+>>>>>>> Stashed changes
                                 <p id="abstract4" class="conceptAbstract"></p>
                               
                             </div>
@@ -131,7 +143,13 @@
                                         </button>
                                     </div>
                                     <div class="entityList">
+<<<<<<< Updated upstream
                                         <ul id="people"></ul>                         
+=======
+                                        <ul id="people">
+                                        
+                                        </ul>                         
+>>>>>>> Stashed changes
                                     </div>                  
                                 </div>
                                 <div class="carousel-item">
@@ -274,9 +292,23 @@
         // socket.on('timer', function(msg){
         // $(('timer started').text(msg));
         // });
+<<<<<<< Updated upstream
         //box 1
         socket.on('Person', function(msg){
         $("#people").empty();
+=======
+
+        //clear
+        socket.on('clearList', function(){
+            $("#people").empty();
+            $("#location").empty();
+            $("#quantity").empty();
+            $("#other").empty();
+        })
+
+        //box 1
+        socket.on('Person', function(msg){
+>>>>>>> Stashed changes
         $("#people").append($('<li>').text(msg));
         var count1 = $("#people").children().length;
         //count1 = "Total People Msg: " + count1;
@@ -288,8 +320,12 @@
         });
         //box 2
         socket.on('Location', function(msg){
+<<<<<<< Updated upstream
         $("#location").empty();
         $('#location').append($('<li>').text(msg));
+=======
+        $("#location").append($('<li>').text(msg));
+>>>>>>> Stashed changes
         var count2 = $("#location").children().length;
         //count2 = "Total Location Msg: " + count2;
         document.getElementById('output2').innerHTML = count2;
@@ -300,8 +336,12 @@
         });
         //box 3
         socket.on('Quantity', function(msg){
+<<<<<<< Updated upstream
         $("#quantity").empty();
         $('#quantity').append($('<li>').text(msg));
+=======
+        $("#quantity").append($('<li>').text(msg));
+>>>>>>> Stashed changes
         var count3 = $("#quantity").children().length;
         //count3 = "Total Quantity Msg: " + count3;
         document.getElementById('output3').innerHTML = count3;
@@ -312,8 +352,12 @@
         });
         //box 4
         socket.on('Other', function(msg){
+<<<<<<< Updated upstream
         $("#other").empty();
         $('#other').append($('<li>').text(msg));
+=======
+        $("#other").append($('<li>').text(msg));
+>>>>>>> Stashed changes
         var count4 = $("#other").children().length;
         //count4 = "Total Other Msg: " + count4;
         document.getElementById('output4').innerHTML = count4;

@@ -8,12 +8,37 @@ require('dotenv').config({silent: true});
 const fs = require('fs');
 const fsPromises=require('fs').promises;
 const request = require('request');
-const downloadVideo = require('./ytube.js')
-const speech2text=require('./newspeechText');
-const logger = require('./logger');
 const path = require("path")
+const fs_extra = require('fs-extra')
 
-logger.info("Program started");
+//Own Libraries
+const logger = require('./libraries/logger');
+const downloadVideo = require('./libraries/ytube.js')
+const speech2text=require('./libraries/newspeechText');
+
+//global parameters
+const dataDir = './datas';
+let Types=[
+  "Person",
+  "Location",
+  "Quantity",
+  "Company",
+  "Facility",
+  "JobTitle"
+]
+
+let entities=[
+  "Person",
+  "Location",
+  "Quantity",
+  "Company",
+  "Facility",
+  "JobTitle",
+];
+let userInterest = 'empty'
+let uploadCount =0;
+let audioFileName = "audio.mp3"
+let filterID = null;
 
 //modules for V2 assistant
 var bodyParser = require('body-parser'); 
@@ -23,6 +48,8 @@ var bodyParser = require('body-parser');
 var AssistantV2 = require('watson-developer-cloud/assistant/v2'); 
 const DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
 const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1.js');
+
+logger.info("Program started");
 
 // Get the environment variables from Cloud Foundry
 const appEnv = cfenv.getAppEnv();
@@ -65,40 +92,35 @@ server.listen(appEnv.port, '0.0.0.0', function() {
 });
 
 //creat necessary documents
-fsPromises.writeFile("categories.json",'')
-        .then(()=> logger.debug("categories created"))
+if (fs.existsSync(dataDir)){
+    fs_extra.emptyDir(dataDir)
+    .then(()=>{
+      return fsPromises.rmdir(dataDir)
+    })
+    .catch((err)=>{logger.error(err)})
+    .then(()=>{
+      logger.debug('./datas folder removed')
+      return fsPromises.mkdir(dataDir)
+    })
+    .catch((err)=>{logger.error(err)})
+    .then(()=>{
+      logger.debug('./datas folder created')
+      fsPromises.writeFile("./datas/concept.json",'')
+        .then(()=> {
+          logger.debug("./datas/concept created")
+          Types.forEach((Type)=>{
+            fs.writeFileSync(path.join('./datas','data'+Type+'.json'),JSON.stringify('',null,2))
+          })
+        })
         .catch((err)=> logger.error(err))
-
-fsPromises.writeFile("./datas/data.json",'')
-        .then(()=> logger.debug("data created"))
-        .catch((err)=> logger.error(err))
+       })
+    .catch((err)=>{logger.error(err)})
+}
 
 fsPromises.writeFile('./public/video.mp4','')
   .then(()=>{logger.debug("video replaced")})
   .catch((err)=>{logger.error(err)})
 
-//global parameters
-let Types=[
-  "Person",
-  "Location",
-  "Quantity",
-  "Company",
-  "Facility",
-  "JobTitle"
-]
-
-let entities=[
-  "Person",
-  "Location",
-  "Quantity",
-  "Company",
-  "Facility",
-  "JobTitle",
-];
-let userInterest = 'empty'
-let uploadCount =0;
-let audioFileName = "audio.mp3"
-let filterID = null;
 
 //create Events to set an order
 const EventEmitter = require('events');
@@ -190,7 +212,7 @@ io.on('connection', function(socket) {
 myEmitter.on('startQuery',(msg)=>{
     setTimeout(()=>{
 
-      readJson('./datas/data.json')
+      readJson('./datas/concept.json')
       .then((results)=> {
           elements = [];
           //console.log(concepts);
@@ -247,7 +269,7 @@ myEmitter.on('startQuery',(msg)=>{
       setTimeout(()=>{
         readEntity(Types)
         console.log("start emitting")
-      },2000)
+      },3000)
       queryConcepts();
     })
     .catch((err)=>{
@@ -259,7 +281,6 @@ myEmitter.on('startQuery',(msg)=>{
   //***********Events **************************************************/
 myEmitter.on('filterID',(newID)=>{
   filterID =  newID;
-  console.log('change ID',filterID)
 })
 
 myEmitter.on('video',(audioFileName)=>{
@@ -274,21 +295,16 @@ myEmitter.once('video',()=>{
 });
 
 myEmitter.on('readTranscript', () => {
-  console.log('an event occurred!');
-  let outputRead = fs.createReadStream('./transcripts')
+  logger.debug('Reading transcript');
+  let outputRead = fs.createReadStream(path.join('./transcripts','realtimeTranscript'))
   outputRead.setEncoding('utf8')
-  //prints the output
-  //outputRead.pipe(process.stdout)
   readTranscript(outputRead)
   .then((message)=>{
-      //let transcriptObject=JSON.parse(message)
-      //console.log(JSON.parse(message))
-      console.log(message)
+      logger.silly("Transcript ending in:"+message.slice(-40))
       //upload doc.json in the current directory
       speech2text.discoveryUpload(message,uploadCount)
       .then((message)=>{
-          console.log('beforeID',message.msg)
-          console.log('newID', message.newID)
+          logger.silly(`Document ID changed to: ${message.newID}`)
           myEmitter.emit('filterID', message.newID);
           setTimeout(()=>{
             myEmitter.emit('startQuery');
@@ -341,8 +357,8 @@ function queryConcepts(){
       //print query results
       //console.log(JSON.stringify(queryResponse, null, 2));
       data = JSON.stringify(queryResponse, null, 2);
-      fsPromises.writeFile("./datas/data.json", data)
-      .then(()=> logger.debug("Query logged in data.json"))
+      fsPromises.writeFile("./datas/concept.json", data)
+      .then(()=> logger.debug("Query logged in ./datas/concept.json"))
       .catch(()=> logger.error("failure"))
     })
     .catch(err => {
@@ -399,7 +415,7 @@ function readJson(fileName){
 
 function queryEntity(entities){
   function setqueryParams(){
-    return new promises((resolve,reject)=>{
+    return new Promise((resolve,reject)=>{
       const queryParams = {
         environment_id: process.env.ENVIRONMENT_ID,
         collection_id: process.env.COLLECTION_ID,
@@ -437,9 +453,6 @@ function queryAllEntities(){
       queryEntity(entity)
       .then((message)=>{
         logger.debug(message)
-        fsPromises.writeFile(path.join("./datas","data"+entity+".json"), data)
-        .then(()=> logger.debug(entity + "written"))
-        .catch((err)=> logger.error(err))
       })
     });
     resolve("All Entities found")
@@ -461,12 +474,6 @@ function entityquery(entityString){
 
   discovery.query(queryParams)
     .then(queryResponse =>{
-      //console.log(JSON.stringify(queryResponse, null, 2));
-      /*
-      fsPromises.writeFile("data.txt", JSON.stringify(queryResponse, null, 2))
-        .then(()=> console.log("success"))
-        .catch(()=> console.log("failure"))
-      */
       
       queryResponse = queryResponse.passages[0].passage_text;
       console.log('successful query');
@@ -483,8 +490,9 @@ function entityquery(entityString){
 //query the entity in discovery
 
 function readEntity(Types){
+
   Types.forEach((Type)=>{
-    
+  io.emit("clearList");
   fs.readFile(path.join('./datas','data'+Type+'.json'),'utf8',(err,data)=>{
       data = JSON.parse(data);
       Entype = data.aggregations[0].aggregations[0].results;
@@ -495,10 +503,10 @@ function readEntity(Types){
         //io.emit(Type, entitybox)
         if(Type=="Person"||Type=="Quantity"||Type=="Location"){
           io.emit(Type, entitybox)
-          console.log("Emit",Type, entitybox)
+          logger.silly(`Emit :${Type} :${entitybox}`)
         } else{
           io.emit("Other",entitybox+","+ Type)
-          console.log("Other",entitybox +","+Type)
+          logger.silly("Other" + entitybox + "," + Type )
         }
 
       })

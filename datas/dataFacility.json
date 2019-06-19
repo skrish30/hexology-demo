@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 {
   "type": "nested",
   "path": "enriched_text.entities",
@@ -18,3 +19,6 @@
     }
   ]
 }
+=======
+""
+>>>>>>> Stashed changes
