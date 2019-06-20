@@ -66,10 +66,15 @@ Watson Assistant is an artificial chatbot builder that allows you to construct a
 #### Watson Discovery
 
 Watson Discovery is a query tool that can add cognitive search and content analysis engines to identify patterns, trends, and actionable insights. It is able to integrate structured and unstructured data with certain topics or types of entities, filter documents from a large data set or passages from a single document with specified contents and provide tone analysis or keyword extractions.
+
 ### Front-end server (webpage)
 
-#### Webpage Design
+As a standalone prototype, a web-based tool, which loads a TED Talk video by inputting the share link, is built.
 
+Instead of using a microphone, a website is finally chosen as the proof-of-concept method since it is the easiest way to get access to tones of reliable conference videos online, which is crucial for AI training and testing.
+
+#### Webpage Design
+The whole webpage is developed by using JavaScript, HTML and CSS under Node.js environment. Bootstrap, which contains CSS and JavaScript-based design templates for forms, buttons, and other interface components, is used as the CSS framework directed at front-end web development. JQuery, a JavaScript library, is used to simplify development. MongoDB database can be used to store or load conference transcripts and user profiles, which are saved and analysed to provide better user experience. The database is not included in this version, but codes are kept as references for further development. User Interface is designed to be simple but informative. Using Socket IO library, a hexology chatbot is implemented to give useful user instructions and enable users to input their certain expertise, interests or requirements. There also three modules on the website which containing outputs from IBM Watson Discovery, IBM Speech-To-Text and DBpedia. To enable these outputs, which contain different topics, be shown on the webpage like slides, one component called 'Carousel' from Bootstrap is introduced.
 
 ## Deployment
 
