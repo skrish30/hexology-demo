@@ -78,7 +78,7 @@ The whole webpage is developed by using JavaScript, HTML and CSS under Node.js e
 
 Below are demos for the webpage:
 
-![Alt Text](https://github.com/skrish30/hexology-demo/tree/master/GIF/chatbot.gif)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/chatbot.gif?raw=truef)
 
 ## Deployment
 
