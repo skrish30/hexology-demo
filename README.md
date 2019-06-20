@@ -96,7 +96,10 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Che Zhang** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Subhakrish Krishnamra** - *Initial work* 
+* **Yiwen Zou** - *Initial work* 
+* **Zhenyu Luo** - *Initial work* 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
