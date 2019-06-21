@@ -61,6 +61,11 @@ Explain what has been done to develop the system
 #### Watson Assistant
 
 Watson Assistant is an artificial chatbot builder that allows you to construct a conversation interface into any application, device, or channel.
+In the back end, you will need to create a dialog in Watson Assistant tool:
+
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/dialog.PNG)
+
+By doing this, a chatbot will be created to achieve the goals of a warm welcome, a simple user instruction, receiving the link of a video, a quick questionnaire about user interests, then storing the interest as a string and feeding   back with related information to make it a personalised summary.
 #### Watson Speech to Text
 
 #### Watson Discovery
