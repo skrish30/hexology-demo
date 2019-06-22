@@ -74,7 +74,7 @@ Watson Discovery is a query tool that can add cognitive search and content analy
 The conference companion is designed to extract concepts and entities from the transcript documents, and it is able to enrich the information by searching for extra knowledge on other sources of data base and get the text where the keywords appear in the documents.
 In Watson Discovery, the process of getting all the concepts, listing all the entities and searching for the passages where keywords appear is shown below:
 
-![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/discovery.gif)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow1.PNG)
 
 These will also be shown on the webpage as the analysis proceeds.
 
