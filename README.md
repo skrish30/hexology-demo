@@ -78,7 +78,7 @@ In Watson Discovery, the process of getting all the concepts, listing all the en
 
 These will also be shown on the webpage as the analysis proceeds.
 
-### Front-end server (webpage)
+### Front-end server
 
 As a standalone prototype, a web-based tool, which loads a TED Talk video by inputting the share link, is built.
 
@@ -115,20 +115,17 @@ Add additional notes about how to deploy this on a live system
 * Watson Assistant - The web chatbot used. Version 2.0
 * Watson Speech to Text - Dependency Management
 * Watson Discovery - Used to query and filter transcript. Version 1.0
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
+* Bootstrap - Used for front-end design template. Version 4.3.1
+* jQuery - Used for messages emit and receive. Version 3.4.1
+* Node.js - Used as develope environment. Version 10.16.0
+* MongoDB - Used as an additional function to save user profiles. Version 4.0.8
 
 ## Authors
 
-* **Che Zhang** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Che Zhang** - *Initial work* 
 * **Subhakrish Krishnamra** - *Initial work* 
 * **Yiwen Zou** - *Initial work* 
 * **Zhenyu Luo** - *Initial work* 
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
