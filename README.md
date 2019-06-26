@@ -105,7 +105,7 @@ As shown, the Passage block shows a passage that contains one of the entities in
 
 A complete flow of the process is shown in this picture:
 
-![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow.PNG)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow1.PNG)
 
 ### Debugging
 Add additional notes about how to deploy this on a live system
