@@ -107,8 +107,9 @@ A complete flow of the process is shown in this picture:
 
 ![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow1.PNG)
 
-### Debugging
-Add additional notes about how to deploy this on a live system
+### Customisation
+
+If you want to create your own chatbot (dialog) or different functions in Watson Discovery, a fundamental tutorial is here in [IBM badges](https://www.youracclaim.com/org/ibm/badge/discover-your-inner-chatbot-find-valuable-insights-with-ibm-watson).
 
 ## Ethical Consequences & Sustainability
 
