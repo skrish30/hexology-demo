@@ -110,6 +110,10 @@ A complete flow of the process is shown in this picture:
 ### Debugging
 Add additional notes about how to deploy this on a live system
 
+## Ethical Consequences & Sustainability
+
+Details about the report of ethical consequences and sustainability report are included in the folder named documentation report.
+
 ## Built With
 
 * Watson Assistant - The web chatbot used. Version 2.0
@@ -130,9 +134,3 @@ Add additional notes about how to deploy this on a live system
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
