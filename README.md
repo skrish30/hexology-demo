@@ -128,8 +128,9 @@ Details about the report of ethical consequences and sustainability report are i
 
 * **Che Zhang** - *Initial work* 
 * **Subhakrish Krishnamra** - *Initial work* 
-* **Yiwen Zou** - *Initial work* 
+* **Yiwen Zou** - *Initial work*  
 * **Zhenyu Luo** - *Initial work* 
+
 
 ## License
 
