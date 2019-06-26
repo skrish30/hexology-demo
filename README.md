@@ -93,7 +93,7 @@ The whole webpage is developed by using JavaScript, HTML and CSS under Node.js e
 
 After ```npm start``` or ```ibmcloud app push``` and opening the webpage, a chatbot will appear and talk to the user with the dialog created above.
 
-![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow1.PNG)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/chatbot.gif)
 
 Here, the user can either follow a complete dialog or directly input the link of the video at the beginning for sophisticated users. Afterwards, the video will be played once it is downloaded. Then the video (mp4 file) will be converted to mp3 file to input into Watson Speech to Text tool to get the transcript of the video. The transcript will be sent to Watson Discovery in JSON format every 30 seconds, and it will be analysed in real time. The results from the Watson Discovery will show on the three blocks under the video and the chatbot:
 
