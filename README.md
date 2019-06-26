@@ -74,7 +74,7 @@ Watson Discovery is a query tool that can add cognitive search and content analy
 The conference companion is designed to extract concepts and entities from the transcript documents, and it is able to enrich the information by searching for extra knowledge on other sources of data base and get the text where the keywords appear in the documents.
 In Watson Discovery, the process of getting all the concepts, listing all the entities and searching for the passages where keywords appear is shown below:
 
-![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow1.PNG)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/discovery.gif)
 
 These will also be shown on the webpage as the analysis proceeds.
 
@@ -93,7 +93,7 @@ The whole webpage is developed by using JavaScript, HTML and CSS under Node.js e
 
 After ```npm start``` or ```ibmcloud app push``` and opening the webpage, a chatbot will appear and talk to the user with the dialog created above.
 
-![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/chatbot.gif?raw=truef)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/flow1.PNG)
 
 Here, the user can either follow a complete dialog or directly input the link of the video at the beginning for sophisticated users. Afterwards, the video will be played once it is downloaded. Then the video (mp4 file) will be converted to mp3 file to input into Watson Speech to Text tool to get the transcript of the video. The transcript will be sent to Watson Discovery in JSON format every 30 seconds, and it will be analysed in real time. The results from the Watson Discovery will show on the three blocks under the video and the chatbot:
 
@@ -130,7 +130,6 @@ Details about the report of ethical consequences and sustainability report are i
 * **Subhakrish Krishnamra** - *Initial work* 
 * **Yiwen Zou** - *Initial work*  
 * **Zhenyu Luo** - *Initial work* 
-
 
 ## License
 
