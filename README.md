@@ -91,7 +91,7 @@ The whole webpage is developed by using JavaScript, HTML and CSS under Node.js e
 
 An example (HTML file) of the webpage UI design is shown in this picture:
 
-![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/UI design.JPG)
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/UI%20design.JPG)
 
 ## Deployment
 
@@ -189,7 +189,7 @@ The JSON output from Watson Discovery will be evaluated by Hexology to establish
 
 ## Potential Legal dispute
 
-The whole prototype is built on open-source work, libraries, database or APIs. IBM Watson services can be accessed by anyone without charges. Therefore, based on the work at this stage, there will no potential legal dispute in the near future.
+The whole prototype is built on open-source work, libraries, database or APIs. IBM Watson services can be accessed by anyone without charges. Therefore, based on the work at this stage, it is believed that there will no potential legal dispute in the near future.
 
 ## Authors
 
