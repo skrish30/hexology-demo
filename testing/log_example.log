@@ -1,0 +1,50 @@
+2019-06-27 17:16:28 info: Program started
+2019-06-27 17:16:28 info: server starting on http://localhost:6001
+2019-06-27 17:16:28 debug: video replaced
+2019-06-27 17:16:28 debug: ./datas folder removed
+2019-06-27 17:16:28 debug: ./datas folder created
+2019-06-27 17:16:28 debug: ./datas/concept created
+2019-06-27 17:16:44 debug: valid URL
+2019-06-27 17:16:44 debug: Start on  1561630604628
+2019-06-27 17:16:54 debug: Download took  9 seconds
+2019-06-27 17:16:54 debug: Started mp3 conversion using FFMPEG
+2019-06-27 17:17:14 debug: file has been converted successfully
+2019-06-27 17:17:15 info: ready for speech text
+2019-06-27 17:17:15 debug: sucess:set audioParams
+2019-06-27 17:17:15 debug: Start Transcription
+2019-06-27 17:17:45 debug: Reading transcript
+2019-06-27 17:17:45 debug: Transcript1.json:ready for upload
+2019-06-27 17:17:47 debug: document_id:ab041074-d0be-43c2-bc51-f4014c2f020c,status:pending
+2019-06-27 17:17:57 debug: Upload done
+2019-06-27 17:17:58 debug: All Entities found
+2019-06-27 17:17:59 debug: Personsuccessful query
+2019-06-27 17:18:00 debug: Quantitysuccessful query
+2019-06-27 17:18:00 debug: Locationsuccessful query
+2019-06-27 17:18:00 debug: Facilitysuccessful query
+2019-06-27 17:18:00 debug: Query logged in ./datas/concept.json
+2019-06-27 17:18:00 debug: Companysuccessful query
+2019-06-27 17:18:00 debug: JobTitlesuccessful query
+2019-06-27 17:18:15 debug: Reading transcript
+2019-06-27 17:18:15 debug: Transcript2.json:ready for upload
+2019-06-27 17:18:15 debug: document_id:83a4df0e-3fe6-4021-91da-1a191e49cf02,status:pending
+2019-06-27 17:18:22 debug: Upload done
+2019-06-27 17:18:23 debug: All Entities found
+2019-06-27 17:18:24 debug: Locationsuccessful query
+2019-06-27 17:18:24 debug: Personsuccessful query
+2019-06-27 17:18:24 debug: Quantitysuccessful query
+2019-06-27 17:18:24 debug: JobTitlesuccessful query
+2019-06-27 17:18:24 debug: Companysuccessful query
+2019-06-27 17:18:24 debug: Facilitysuccessful query
+2019-06-27 17:18:24 debug: Query logged in ./datas/concept.json
+2019-06-27 17:18:45 debug: Reading transcript
+2019-06-27 17:18:45 debug: Transcript3.json:ready for upload
+2019-06-27 17:18:46 debug: document_id:a404d57f-8c97-4fad-803f-5440794f8580,status:pending
+2019-06-27 17:18:52 debug: Upload done
+2019-06-27 17:18:53 debug: All Entities found
+2019-06-27 17:18:54 debug: Personsuccessful query
+2019-06-27 17:18:54 debug: Locationsuccessful query
+2019-06-27 17:18:54 debug: Companysuccessful query
+2019-06-27 17:18:54 debug: Quantitysuccessful query
+2019-06-27 17:18:54 debug: Facilitysuccessful query
+2019-06-27 17:18:54 debug: JobTitlesuccessful query
+2019-06-27 17:18:55 debug: Query logged in ./datas/concept.json
