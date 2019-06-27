@@ -111,6 +111,8 @@ Here, the user can either follow a complete dialog or directly input the link of
 
 As shown, the Passage block shows a passage that contains one of the entities in the Entities block. The user can change other entities and their sources by clicking them in the Entities block:
 
+![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/passages.gif)
+
 ***************************************
 
 A complete flow of the process is shown in this picture:
