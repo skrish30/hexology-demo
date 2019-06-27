@@ -95,7 +95,7 @@ An example (HTML file) of the webpage UI design is shown in this picture:
 
 ## Testing the System
 
-[Test results](https://github.com/skrish30/hexology-demo/testing/README.md)
+[Test results](https://github.com/skrish30/hexology-demo/tree/master/testing)
 
 ## Deployment
 
