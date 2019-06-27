@@ -95,7 +95,7 @@ An example (HTML file) of the webpage UI design is shown in this picture:
 ![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/UI%20design.JPG)
 
 ## Testing the System
-The real-time feature is an essential element for Hexology to be a feasible conference companion tool. Therefore we have analysed the important timing characteristics of the program as shown in the [Test results](https://github.com/skrish30/hexology-demo/tree/master/testing). Also, we have implemented a logger by utilising the [winstonjs library]https://github.com/winstonjs/winston in order to record the important events and the timestamp. The results.log file logs the event in heirarchy of importance from error(highest importance) to debug(lowest importance).
+The real-time feature is an essential element for Hexology to be a feasible conference companion tool. Therefore we have analysed the important timing characteristics of the program as shown in the [Test results](https://github.com/skrish30/hexology-demo/tree/master/testing). Also, we have implemented a logger by utilising the [winstonjs library](https://github.com/winstonjs/winston) in order to record the important events and the timestamp. The results.log file logs the event in heirarchy of importance from error(highest importance) to debug(lowest importance).
 
 ## Deployment
 
