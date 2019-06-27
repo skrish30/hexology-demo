@@ -7,6 +7,9 @@ Brainstorming activity at IBM hursley on the components of the conference compan
 
 So far the team has been working independently to do their own research, and they meet up soon to discuss what they have learnt and built. The workload has been split into two parts: 1. Webpage development 2. Work with IBM Discovery. Required skills like JavaScript are learnt based on different jobs. Several initial tutorials shared on the IBM Trello board have completed.
 
+### 20th May 
+https://github.com/skrish30/hexology-demo/blob/master/Documentation%20Report/meeting_diagram.jpg
+
 ### 28th May
 
 The team has successfully used Watson Discovery to extract concepts and keywords from a transcript of a TED Talk Video. Screenshots of the JSON Data output were shared with client using Skype.
@@ -56,3 +59,8 @@ Explore DBPedia which Watson seems to reference
 Select sample videos from Ted Website and evaluate the output of these from Watson Discovery before our next meeting or Skype call.
 
 The JSON output from Watson Discovery will be evaluated by Hexology to establish how to personalise the information Watson curates and will be discussed at our next meeting.
+
+### June 10th
+Meeting with both the client and academic supervisor to revamp the UI and prepare for the demonstration on 13th June 
+https://github.com/skrish30/hexology-demo/blob/master/Documentation%20Report/UI1.jpg
+https://github.com/skrish30/hexology-demo/blob/master/Documentation%20Report/UI2.jpg
