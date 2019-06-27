@@ -128,6 +128,7 @@ If you want to create your own chatbot (dialog) or different functions in Watson
 Details about the report of ethical consequences and sustainability report are included in the folder named [documentation report](https://github.com/skrish30/hexology-demo/blob/master/Documentation%20Report/Documentation%20Report.docx).
 
 ## Record of meetings, requirements gathering, decisions taken & design history
+Record of meetings can be found in the [Documentation Report folder](https://github.com/skrish30/hexology-demo/tree/master/Documentation%20Report)
 
 
 ## Built With
