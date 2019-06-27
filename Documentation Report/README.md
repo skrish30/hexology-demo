@@ -1,7 +1,7 @@
 ## Record of meetings
 ### 3rd May 
 Brainstorming activity at IBM hursley on the components of the conference companion 
-
+![Alt text](https://github.com/skrish30/hexology-demo/blob/master/Documentation%20Report/hursley.jpg)
 
 ### 13th May
 
