@@ -7,7 +7,7 @@ When the program is started, the user will talk to the chatbot and the time take
 
 ### Obtaining transcripts
 ![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/timeline2.png)
-As soon as the audio is converted to mp3, the audio is streamed to the speech to text service and a result is returned when each sentence is completed. 
+As soon as the audio is converted to mp3, the audio is streamed to the speech to text service and the results are returned when each sentence is completed. 
 
 ### Watson Discovery Query
 ![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/timeline3.png)
@@ -15,5 +15,5 @@ As soon as the audio is converted to mp3, the audio is streamed to the speech to
 The transcript is then uploaded every 30s and this step involves uploading a JSON file to the Watson Discovery Service. The uploading process takes around 12s and is the main bottleneck in the program. After the uploading process, the document is ingested into the Discovery Service and we can perform a query on the document. We are interested in the entities and concept enrichments of the documents and the necessary query takes an additional 2 seconds. As we can see, the uploading process on discovery is parallel to the speech to text transcription which is continuous and is preparing the next transcript to be uploaded.
 
 ### Timing
-The full timing diagram can be found using the [link](https://imperiallondon-my.sharepoint.com/:x:/g/personal/sk4316_ic_ac_uk/EfBzSnHvMPhOgD1cJNdGgYABG5-2dF3oIwTmVxznjJ9MAA?e=oLmkd2)
+The complete and updated timing diagram can be found using the [link](https://imperiallondon-my.sharepoint.com/:x:/g/personal/sk4316_ic_ac_uk/EfBzSnHvMPhOgD1cJNdGgYABG5-2dF3oIwTmVxznjJ9MAA?e=oLmkd2)
 
