@@ -123,7 +123,7 @@ If you want to create your own chatbot (dialog) or different functions in Watson
 
 ## Ethical Consequences & Sustainability
 
-Details about the report of ethical consequences and sustainability report are included in the folder named documentation report.
+Details about the report of ethical consequences and sustainability report are included in the folder named [documentation report](https://github.com/skrish30/hexology-demo/blob/master/Documentation%20Report/Documentation%20Report.docx).
 
 ## Record of meetings, requirements gathering, decisions taken & design history
 
