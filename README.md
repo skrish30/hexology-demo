@@ -54,8 +54,6 @@ For example: https://my-app-name.mybluemix.net
 
 ## Building the system
 
-Explain what has been done to develop the system
-
 ### Back-end (Watson) Services
 
 #### Watson Assistant
@@ -66,8 +64,9 @@ In the back end, you will need to create a dialog in Watson Assistant tool:
 ![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/dialog.PNG)
 
 By doing this, a chatbot will be created on the webpage to achieve the goals of a warm welcome, a simple user instruction, receiving the link of a video, a quick questionnaire about user interests, then storing the interest as a string and feeding   back with related information to make it a personalised summary.
+
 #### Watson Speech to Text
-Watson Speech to Text is a service that can easily convert audio and voice into written text for quick understanding of content. The service can be used by sending API requests or over a Websocket which sends audio and returns transcription results for recognition requests over a WebSocket connection. The prototype aims to simulate how the Hexology conference companion can analyse the live stream of the speaker delivering the talk in real-time. In order to do so, we require a live stream of a conference which we will simulate in this case using the [throttle library](https://www.npmjs.com/package/throttle) which will limit the rate that the audio is uploaded over the Websockets connection. Additionally, Watson Speech to Text only works on specific audio formats such as MP3, therefore to obtain this, we will use the [ytdl-core library](https://www.npmjs.com/package/ytdl-core) as well as [fluent-ffmpeg library](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg) to first download a TED talk from youtube and then convert MP4 to MP3 format.
+Watson Speech to Text is a service that can easily convert audio and voice into written text for quick understanding of content. The service can be used by sending API requests or over a Websocket which sends audio and returns transcription results for recognition requests over a WebSocket connection. The prototype aims to simulate how the Hexology conference companion can analyse the live stream of the speaker delivering the talk in real-time. In order to do so, we require a live stream of a conference which we will simulate by using the [throttle library](https://www.npmjs.com/package/throttle) which will limit the rate that the audio is uploaded over the Websockets connection. Additionally, Watson Speech to Text only works on specific audio formats such as MP3, therefore to obtain this, we will use the [ytdl-core library](https://www.npmjs.com/package/ytdl-core) as well as [fluent-ffmpeg library](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg) to first download a TED talk from youtube and then convert MP4 to MP3 format.
 
 #### Watson Discovery
 
