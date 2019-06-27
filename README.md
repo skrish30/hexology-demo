@@ -93,6 +93,10 @@ An example (HTML file) of the webpage UI design is shown in this picture:
 
 ![Alt Text](https://github.com/skrish30/hexology-demo/blob/master/GIF/UI%20design.JPG)
 
+## Testing the System
+
+https://imperiallondon-my.sharepoint.com/:x:/g/personal/sk4316_ic_ac_uk/EfBzSnHvMPhOgD1cJNdGgYABG5-2dF3oIwTmVxznjJ9MAA?e=Vehdix
+
 ## Deployment
 
 ### Running the system
