@@ -95,7 +95,7 @@ An example (HTML file) of the webpage UI design is shown in this picture:
 
 ## Testing the System
 
-https://imperiallondon-my.sharepoint.com/:x:/g/personal/sk4316_ic_ac_uk/EfBzSnHvMPhOgD1cJNdGgYABG5-2dF3oIwTmVxznjJ9MAA?e=Vehdix
+[Test results](https://github.com/skrish30/hexology-demo/testing/README.md)
 
 ## Deployment
 
